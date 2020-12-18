@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import HomeAdmin from '../views/HomeAdmin.vue'
-//import store from './store'
 
 const routes = [
   {
@@ -27,12 +26,12 @@ const routes = [
   {
     path: '/Persona',
     name: 'ListarPersona',
-    component: () => import('../components/ListarPersonasComponent.vue')
+    component: () => import('../components/ListarPersona.vue')
   }, 
   {
     path: '/AddPersona',
     name: 'AddPersona',
-    component: () => import('../components/NuevaPersonaComponent.vue')
+    component: () => import('../components/NuevaPersona.vue')
   }, 
   {
     path: '/ListarUsuario',
