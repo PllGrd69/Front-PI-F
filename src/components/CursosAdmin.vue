@@ -19,6 +19,9 @@
                   <li class="nav-item">
                     <a href="/Persona">Persona</a>
                   </li>
+                                      <li class="nav-item">
+                      <a href="/ListarUsuario">Usuario</a>
+                    </li>
                 </ul>
               </div>
             </nav>
@@ -157,7 +160,7 @@
 
                               <td
                                 class="text-center"
-                                @click="editarPersona(curso.id)"
+                                @click="editarCurso(curso.id)"
                               >
                                 <i
                                   class="fas fa-user-edit text-warning btn_Action"
@@ -165,7 +168,7 @@
                               </td>
                               <td
                                 class="text-center"
-                                @click="mensajeEliminarPersona(curso.id)"
+                                @click="mensajeEliminarCurso(curso.id)"
                               >
                                 <i
                                   class="fas fa-user-times text-danger btn_Action"
@@ -199,7 +202,7 @@
 import swal from "sweetalert";
 import axios from "axios";
 export default {
-  name: "NuevaPersonaComponent",
+  name: "CursoAdmin",
   props: ["titulo"],
   data() {
     return {
