@@ -173,7 +173,6 @@ import HelloWorld from "@/components/HelloWorld.vue";
 
 export default {
   name: "HomeAdmin",
-<<<<<<< HEAD
   components: {
   },
   methods: {
@@ -185,10 +184,8 @@ export default {
   computed: {
     ...mapGetters(['estaActivo']),
     ...mapGetters(['tipoUsuario'])
-  }
-=======
+  },
   components: {},
->>>>>>> e50f36cad5cd39ee59f3330bf8aa49325fcc44d0
 };
 </script>
 

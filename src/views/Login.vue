@@ -64,7 +64,7 @@ export default {
       .then(res =>{
         const token = res.data.token;
         this.guardarUsuario(token)
-        console.log(res.data);
+        this.$router.push({ name: "Home" });
       })
       .catch(e=>{
         console.log(e.response.data);
