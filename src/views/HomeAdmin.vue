@@ -20,12 +20,8 @@
               </div>
             </div>
           </div>
-          <!-- row -->
         </div>
-        <!-- container -->
       </div>
-      <!-- header top -->
-
       <div class="header-logo-support pt-30 pb-30">
         <div class="container">
           <div class="row">
@@ -127,7 +123,7 @@
                         <i class="fas fa-plus"></i>
                       </span>
                       <span class="cont">
-                        <span> Añadir usuario</span>
+                        <span>Agregar Categoria</span>
                       </span>
                     </span>
                   </a>
@@ -139,7 +135,7 @@
                         <i class="fas fa-plus"></i>
                       </span>
                       <span class="cont">
-                        <span> Carga Academica </span>
+                        <span>Agregar Usuarios</span>
                       </span>
                     </span>
                   </a>
