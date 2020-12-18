@@ -36,7 +36,9 @@
             <div class="col-lg-7 col-md-7">
               <div class="support-button float-right d-none d-md-block">
                 <div class="button float-left">
-                  <a href="Login" class="main-btn">Login</a>
+                  <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
+                  <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
+                  <a  @click="mostrarInfor()" class="main-btn">{{tipoUsuario.rol}}</a>
                 </div>
               </div>
             </div>
@@ -150,7 +152,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import {mapActions, mapGetters} from 'vuex'
 import HelloWorld from "@/components/HelloWorld.vue";
 
 
@@ -158,6 +160,16 @@ export default {
   name: "HomeAdmin",
   components: {
   },
+  methods: {
+    ...mapActions(['cerrarSesion']),
+    mostrarInfor(){
+      console.log(this.tipoUsuario);
+    }
+  },
+  computed: {
+    ...mapGetters(['estaActivo']),
+    ...mapGetters(['tipoUsuario'])
+  }
 };
 </script>
 

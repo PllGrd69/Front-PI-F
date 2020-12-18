@@ -64,7 +64,6 @@ export default {
       .then(res =>{
         const token = res.data.token;
         this.guardarUsuario(token)
-        window.alert(res.data.token)
         console.log(res.data);
       })
       .catch(e=>{
