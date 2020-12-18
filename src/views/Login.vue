@@ -12,14 +12,14 @@
                               <div class="row">
                                 <div class="col-md-9 col-lg-8 mx-auto">
                                   <h3 class="login-heading mb-4">Acceso a la plataforma</h3>
-                                  <form>
+                                  <form @submit.prevent="login()">
                                     <div class="form-label-group">
-                                      <input v-model="Usuario" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+                                      <input v-model="usuario.Email" type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
                                       <label for="inputEmail">Correo o Usuario</label>
                                     </div>
 
                                     <div class="form-label-group">
-                                      <input v-model="Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                                      <input v-model="usuario.Password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                                       <label for="inputPassword">Contraseña</label>
                                     </div>
 
@@ -46,8 +46,34 @@
 
   </div>
 </template>
-
+  
 <script>
+import axio from "axios";
+import {mapActions} from 'vuex';
+export default {
+  data(){
+    return {
+      usuario: {Email: 'hectorlimahuaya@upeu.edu.pe', Password: '12567%Ac'}
+    }
+  },
+  methods: {
+    ...mapActions(['guardarUsuario']),
+    login() {
+      console.log(this.usuario)
+      this.axios.post('/usuariologin/login', this.usuario)
+      .then(res =>{
+        const token = res.data.token;
+        this.guardarUsuario(token)
+        window.alert(res.data.token)
+        console.log(res.data);
+      })
+      .catch(e=>{
+        console.log(e.response.data);
+        window.alert(e.response.data)
+      })
+    }
+  }
+}
 </script>
 
 <style>
