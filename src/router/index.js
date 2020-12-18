@@ -24,6 +24,26 @@ const routes = [
     name: 'Login',
     component: () => import('../views/Login.vue')
   },  
+  {
+    path: '/Persona',
+    name: 'ListarPersona',
+    component: () => import('../components/ListarPersonasComponent.vue')
+  }, 
+  {
+    path: '/AddPersona',
+    name: 'AddPersona',
+    component: () => import('../components/NuevaPersonaComponent.vue')
+  }, 
+  {
+    path: '/ListarUsuario',
+    name: 'ListarUsuario',
+    component: () => import('../components/ListarUsuario.vue')
+  }, 
+  {
+    path: '/AddUsuario',
+    name: 'AddUsuario',
+    component: () => import('../components/NuevoUsuario.vue')
+  }, 
 
 ]
 

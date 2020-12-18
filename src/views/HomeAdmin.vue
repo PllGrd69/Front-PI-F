@@ -29,14 +29,15 @@
       <div class="header-logo-support pt-30 pb-30">
         <div class="container">
           <div class="row">
-            <div class="col-lg-4 col-md-4">
-              <div class="logo">
-                <a href="HomeAdmin.html">
-                  <h1>LMS-BookEye</h1>
+            <div class="col-lg-5 col-md-5">
+              <div class="logo" >
+                <a href="/" >
+                  <img src="../../public/visual.png" alt="logo"  class="d-inline" id="LogoBE" > 
+                 <h1 class="d-inline">LMS-BookEye</h1>
                 </a>
               </div>
             </div>
-            <div class="col-lg-8 col-md-8">
+            <div class="col-lg-7 col-md-7">
               <div class="support-button float-right d-none d-md-block">
                 <div class="button float-left">
                   <a href="Login" class="main-btn">Login</a>
@@ -61,10 +62,10 @@
                       <a href="/">Home</a>
                     </li>
                     <li class="nav-item">
-                      <a href="/cursos">Cursos</a>
+                      <a href="/CursosAdmin">Cursos</a>
                     </li>
                     <li class="nav-item">
-                      <a href="/listar-persona">Persona</a>
+                      <a href="/Persona">Persona</a>
                     </li>
                   </ul>
                 </div>
@@ -164,8 +165,11 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .single-slider{
   height: 60vh;
+}
+#LogoBE{
+  width: 65px;
 }
 </style>

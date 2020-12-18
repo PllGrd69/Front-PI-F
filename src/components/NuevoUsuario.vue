@@ -34,14 +34,14 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-banner-cont">
-              <h2>Crear Persona</h2>
+              <h2>Crear Usuario</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
                     <a href="/">Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
-                    Crear Persona
+                    Crear Usuario
                   </li>
                 </ol>
               </nav>
@@ -92,30 +92,30 @@
                   >
                     <div class="form-group row">
                       <label for="nombrePersona" class="col-sm-2 col-form-label"
-                        >Nombre Personal</label
+                        >UserName</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
                           id="nombrePersona"
-                          placeholder="Jose Juanito"
+                          placeholder="UserName"
                           v-model="persona.Nombre"
                         />
                       </div>
                     </div>
                     <div class="form-group row">
                       <label
-                        for="apellidoPaterno"
+                        for="Email"
                         class="col-sm-2 col-form-label"
-                        >Apellido Paterno</label
+                        >Email</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
-                          id="apellidoPaterno"
-                          placeholder="Simoni"
+                          id="Email"
+                          placeholder="Email"
                           v-model="persona.Apellido_paterno"
                         />
                       </div>
@@ -124,14 +124,14 @@
                       <label
                         for="apellidoMaterno"
                         class="col-sm-2 col-form-label"
-                        >Apellido Materno</label
+                        >Clave</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
-                          id="apellidoMaterno"
-                          placeholder="Simoni"
+                          id="Clave"
+                          placeholder="Clave"
                           v-model="persona.Apellido_materno"
                         />
                       </div>

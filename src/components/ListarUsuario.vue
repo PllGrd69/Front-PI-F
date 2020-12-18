@@ -34,14 +34,14 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="page-banner-cont">
-              <h2>Crear Persona</h2>
+              <h2>Crear Usuario</h2>
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
                     <a href="/">Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
-                    Crear Persona
+                    Crear Usuario
                   </li>
                 </ol>
               </nav>
@@ -56,11 +56,6 @@
           <div class="row mb-10">
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link to="/addua" class="nav-link text-light"
-                  ><div class="button">
-                    <a href="#" class="main-btn">Crear Usuario</a>
-                  </div>
-                </router-link>
               </div>
             </div>
             <div class="col-lg-6 col-md-6">
@@ -69,9 +64,6 @@
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
                 >
-                  <!--  <div class="button">
-                    <a href="#" class="main-btn">Añadir Sucursal</a>
-                  </div>-->
                 </router-link>
               </div>
             </div>
@@ -79,40 +71,8 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="corses-singel-left">
-                <form class="form-inline" @submit.prevent="obtenerPersonas()">
-                  <div class="form-group row col-sm-6">
-                    <label for="inputEmail3" class="col-sm-1 col-form-label"
-                      >Limit</label
-                    >
-                    <div class="col-sm-11">
-                      <input
-                        type="number"
-                        class="form-control"
-                        v-model="limit"
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group row col-sm-6">
-                    <label for="inputEmail3" class="col-sm-1 col-form-label"
-                      >Offset</label
-                    >
-                    <div class="col-sm-11">
-                      <input
-                        type="number"
-                        class="form-control"
-                        v-model="offset"
-                      />
-                    </div>
-                  </div>
-                  <button
-                    type="submit"
-                    class="btn btn-primary mb-2 col-sm-12 mt-3"
-                  >
-                    Buscar
-                  </button>
-                </form>
                 <h2 class="mt-5">
-                  Total de personas: <strong>{{ totalPersonas }}</strong>
+                  Crear Usuario
                 </h2>
                 <hr class="divider my-4" />
                 <div class="overflow-auto" style="width: 100%; height: 250px">
@@ -123,14 +83,11 @@
                     <thead>
                       <tr>
                         <th scope="col">id</th>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Apellido Paterno</th>
-                        <th scope="col">Apellido Materno</th>
-                        <th scope="col">Genero</th>
-                        <th scope="col">DNI</th>
-                        <th scope="col">Fecha de Nacimiento</th>
-                        <th scope="col">Editar</th>
-                        <th scope="col">Eliminar</th>
+                        <th scope="col">Usuario</th>
+                        <th scope="col">Password</th>
+                        <th scope="col">Estado</th>
+                        <th scope="col">Fotex</th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -143,8 +100,7 @@
                         <td>{{ persona.apellido_paterno }}</td>
                         <td>{{ persona.apellido_materno }}</td>
                         <td>{{ persona.Genero }}</td>
-                        <td>{{ persona.dni }}</td>
-                        <td>{{ persona.fecha_nacimiento }}</td>
+
                         <td
                           class="text-center"
                           @click="editarPersona(persona.id)"
@@ -170,7 +126,7 @@
                   class="btn btn-primary col-sm-3 mt-1"
                   @click="crearPersona()"
                 >
-                  Agregar nueva persona
+                  Agregar Nuevo Usuario
                 </button>
               </div>
             </div>
