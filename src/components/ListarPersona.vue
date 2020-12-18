@@ -56,7 +56,7 @@
           <div class="row mb-10">
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link to="/addua" class="nav-link text-light"
+                <router-link to="/ListarUsuario" class="nav-link text-light"
                   ><div class="button">
                     <a href="#" class="main-btn">Crear Usuario</a>
                   </div>

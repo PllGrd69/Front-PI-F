@@ -43,6 +43,11 @@ const routes = [
     name: 'AddUsuario',
     component: () => import('../components/NuevoUsuario.vue')
   }, 
+  {
+    path: '/ListarUA',
+    name: 'ListarUA',
+    component: () => import('../components/ListUA.vue')
+  }, 
 
 ]
 

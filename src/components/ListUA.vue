@@ -1,5 +1,31 @@
 <template>
   <div>
+        <div class="navigation">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-10 col-md-10 col-sm-9 col-8">
+            <nav class="navbar navbar-expand-lg">
+              <div
+                class="collapse navbar-collapse sub-menu-bar"
+                id="navbarSupportedContent"
+              >
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item">
+                    <a href="/">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/cursos">Cursos</a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="/Persona">Persona</a>
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
     <section id="page-banner" class="pt-105 pb-110 bg_cover" data-overlay="8">
       <div class="container">
         <div class="row">

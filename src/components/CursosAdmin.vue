@@ -35,7 +35,7 @@
               <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                   <li class="breadcrumb-item">
-                    <a href="HomeAdmin.html">Home</a>
+                    <a href="/">Home</a>
                   </li>
                   <li class="breadcrumb-item active" aria-current="page">
                     Cursos
@@ -52,9 +52,9 @@
         <div class="row">
           <div class="col-lg-6 col-md-6">
             <div class="support-button d-none d-md-block">
-              <router-link to="/addua" class="nav-link text-light"
+              <router-link to="/ListarUA" class="nav-link text-light"
                 ><div class="button">
-                  <a href="#" class="main-btn">Añadir unidad Academica</a>
+                  <a href="/ListarUA" class="main-btn">Añadir unidad Academica</a>
                 </div>
               </router-link>
             </div>
