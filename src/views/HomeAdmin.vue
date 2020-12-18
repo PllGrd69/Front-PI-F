@@ -43,7 +43,16 @@
                 <div class="button float-left">
                   <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
                   <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
-                  <a  @click="mostrarInfor()" class="main-btn">{{tipoUsuario.rol}}</a>
+
+
+                </div>
+                <div class="btn-group ms-3" v-if="estaActivo">
+                  <button type="button" class="btn btn-secondary dropdown-toggle main-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Right-aligned menu
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right ">
+                    <button class="dropdown-item main-btn" type="button ">Action</button>
+                  </div>
                 </div>
               </div>
             </div>
