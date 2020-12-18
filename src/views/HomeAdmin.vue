@@ -43,15 +43,13 @@
                 <div class="button float-left">
                   <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
                   <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
-
-
                 </div>
                 <div class="btn-group ms-3" v-if="estaActivo">
                   <button type="button" class="btn btn-secondary dropdown-toggle main-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Right-aligned menu
+                    {{ this.rolUsuarioEstado }}
                   </button>
                   <div class="dropdown-menu dropdown-menu-right ">
-                    <button class="dropdown-item main-btn" type="button ">Action</button>
+                      <button class="dropdown-item main-btn" type="button" v-for="rol in this.rolesUsuario.rol" :key="rol" @click="cambiarRol(rol)"> {{ rol }} </button>
                   </div>
                 </div>
               </div>
@@ -185,14 +183,13 @@ export default {
   components: {
   },
   methods: {
-    ...mapActions(['cerrarSesion']),
+    ...mapActions(['cerrarSesion','cambiarRol']),
     mostrarInfor(){
-      console.log(this.tipoUsuario);
+      console.log(this.tipoUsuario.rol);
     }
   },
   computed: {
-    ...mapGetters(['estaActivo']),
-    ...mapGetters(['tipoUsuario'])
+    ...mapGetters(['estaActivo', 'rolesUsuario','rolUsuarioEstado']),
   },
   components: {},
 };

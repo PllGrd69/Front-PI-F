@@ -5,7 +5,8 @@ import router from '../router';
 export default createStore({
   state: {
     token: '',
-    usuarioDB: ''
+    usuarioDB: '',
+    rolUsuario: '',
   },
   mutations: {
     obtenerUsuario(state, payload){
@@ -13,8 +14,12 @@ export default createStore({
       if (payload === '') {
         state.usuarioDB = ''
       } else {
-        state.usuarioDB = jwt_decode(payload)
+        state.usuarioDB = jwt_decode(payload);
+        state.rolUsuario = state.usuarioDB.rol[1]; 
       }
+    },
+    asijnarRol(state, payload){
+      state.rolUsuario = payload;
     }
   },
   actions: {
@@ -34,14 +39,20 @@ export default createStore({
       } else {
         commit('obtenerUsuario', '');
       }
+    },
+    cambiarRol({commit}, payload){
+      commit('asijnarRol', payload)
     }
   },
   modules: {
   },
   getters: {
     estaActivo: state => !!state.token,
-    tipoUsuario: state => {
-      return state.usuarioDB
+    rolesUsuario: state => {
+      return state.usuarioDB;
+    },
+    rolUsuarioEstado: state => {
+      return state.rolUsuario;
     }
   }
 })
