@@ -19,6 +19,11 @@ const routes = [
     component: () => import('../components/CursosAdmin.vue')
   },  
   {
+    path: '/AddCursos',
+    name: 'AddCursosAdmin',
+    component: () => import('../components/NuevoCurso.vue')
+  },
+  {
     path: '/Login',
     name: 'Login',
     component: () => import('../views/Login.vue')
