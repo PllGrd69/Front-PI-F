@@ -26,10 +26,15 @@
         <div class="container">
           <div class="row">
             <div class="col-lg-5 col-md-5">
-              <div class="logo" >
-                <a href="/" >
-                  <img src="../../public/visual.png" alt="logo"  class="d-inline" id="LogoBE" > 
-                 <h1 class="d-inline">LMS-BookEye</h1>
+              <div class="logo">
+                <a href="/">
+                  <img
+                    src="../../public/visual.png"
+                    alt="logo"
+                    class="d-inline"
+                    id="LogoBE"
+                  />
+                  <h1 class="d-inline">LMS-BookEye</h1>
                 </a>
               </div>
             </div>
@@ -43,7 +48,7 @@
           </div>
         </div>
       </div>
-<!-- NavBar-->
+      <!-- NavBar-->
       <div class="navigation">
         <div class="container">
           <div class="row">
@@ -63,6 +68,9 @@
                     <li class="nav-item">
                       <a href="/Persona">Persona</a>
                     </li>
+                    <li class="nav-item">
+                      <a href="/ListarUsuario">Usuario</a>
+                    </li>
                   </ul>
                 </div>
               </nav>
@@ -71,8 +79,14 @@
         </div>
       </div>
     </header>
+
+    <!-- Announce -->
     <section>
-      <div class="single-slider bg_cover pt-150 bgslid" data-overlay="4" style="background-image: url(images/slider/s-1.jpg)">
+      <div
+        class="single-slider bg_cover pt-150 bgslid"
+        data-overlay="4"
+        style="background-image: url(images/slider/s-1.jpg)"
+      >
         <div class="container">
           <div class="row">
             <div class="col-xl-7 col-lg-9">
@@ -92,80 +106,80 @@
       </div>
     </section>
   </div>
-     <section id="category-part">
-      <div class="container mt-25">
-        <div class="category pt-10 pb-20">
-          <div class="row">
-            <div class="col-lg-4">
-              <div class="category-text pt-50">
-                <h2>Crear Cursos</h2>
-              </div>
+  <!-- Cuadro De Direccion -->
+  <section id="category-part">
+    <div class="container mt-25">
+      <div class="category pt-10 pb-20">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="category-text pt-50">
+              <h2>Crear Cursos</h2>
             </div>
-            <div
-              class="col-lg-6 offset-lg-1 col-md-8 offset-md-2 col-sm-8 offset-sm-2 col-8 offset-2"
-            >
-              <div class="row">
-                <div class="col-lg-4 mt-10">
-                  <a href="CursosAdmin">
-                    <span class="singel-category text-center color-1">
-                      <span class="icon">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="cont">
-                        <span> Agregar Cursos </span>
-                      </span>
+          </div>
+          <!-- Nombre barra-->
+          <div
+            class="col-lg-6 offset-lg-1 col-md-8 offset-md-2 col-sm-8 offset-sm-2 col-8 offset-2"
+          >
+            <div class="row">
+              <div class="col-lg-4 mt-10">
+                <a href="CursosAdmin">
+                  <span class="singel-category text-center color-1">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
                     </span>
-                  </a>
-                </div>
-                <div class="col-lg-4 mt-10">
-                  <a href="AddUsuario">
-                    <span class="singel-category text-center color-2">
-                      <span class="icon">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="cont">
-                        <span>Agregar Categoria</span>
-                      </span>
+                    <span class="cont">
+                      <span> Agregar Cursos </span>
                     </span>
-                  </a>
-                </div>
-                <div class="col-lg-4 mt-10">
-                  <a href="#">
-                    <span class="singel-category text-center color-3">
-                      <span class="icon">
-                        <i class="fas fa-plus"></i>
-                      </span>
-                      <span class="cont">
-                        <span>Agregar Usuarios</span>
-                      </span>
+                  </span>
+                </a>
+              </div>
+              <div class="col-lg-4 mt-10">
+                <a href="ListarUsuario">
+                  <span class="singel-category text-center color-2">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
                     </span>
-                  </a>
-                </div>
+                    <span class="cont">
+                      <span>Agregar Ususario</span>
+                    </span>
+                  </span>
+                </a>
+              </div>
+              <div class="col-lg-4 mt-10">
+                <a href="/Persona">
+                  <span class="singel-category text-center color-3">
+                    <span class="icon">
+                      <i class="fas fa-plus"></i>
+                    </span>
+                    <span class="cont">
+                      <span>Agregar Persona</span>
+                    </span>
+                  </span>
+                </a>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 </template>
 
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
 
-
 export default {
   name: "HomeAdmin",
-  components: {
-  },
+  components: {},
 };
 </script>
 
 <style >
-.single-slider{
+.single-slider {
   height: 60vh;
 }
-#LogoBE{
+#LogoBE {
   width: 65px;
 }
 </style>

@@ -19,6 +19,9 @@
                   <li class="nav-item">
                     <a href="/Persona">Persona</a>
                   </li>
+                                      <li class="nav-item">
+                      <a href="/ListarUsuario">Usuario</a>
+                    </li>
                 </ul>
               </div>
             </nav>

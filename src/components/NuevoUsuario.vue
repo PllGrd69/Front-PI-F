@@ -77,7 +77,7 @@
                   <h2 v-if="actualizar">
                     Actualizar <strong>{{ id_persona_url }}</strong>
                   </h2>
-                  <h2 v-else>Crear Persona</h2>
+                  <h2 v-else>Crear Usuario</h2>
                   <hr class="divider my-4" />
                   <button
                     type="button"
@@ -168,56 +168,6 @@
                         />
                       </div>
                     </div>
-                    <fieldset class="form-group">
-                      <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">
-                          Genero
-                        </legend>
-                        <div class="col-sm-10">
-                          <div class="row">
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios1"
-                                value="M"
-                                v-model="persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios1">
-                                Masculino
-                              </label>
-                            </div>
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios2"
-                                value="F"
-                                v-model="persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios2">
-                                Femenino
-                              </label>
-                            </div>
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios2"
-                                value="O"
-                                v-model="persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios2">
-                                Otro
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
                     <div class="form-group row">
                       <div class="col-sm-12">
                         <button type="submit" class="col-sm-6 btn btn-primary">
@@ -244,13 +194,11 @@ export default {
   props: ["titulo"],
   data() {
     return {
-      persona: {
-        Nombre: "",
-        Apellido_paterno: "",
-        Apellido_materno: "",
-        Genero: "M",
-        Dni: "",
-        Fecha_nacimiento: "",
+      Usuario: {
+        UserName: "",
+        Email: "",
+        Password: "",
+        Avatar: "",
       },
       id_persona_url: null,
       actualizar: false,

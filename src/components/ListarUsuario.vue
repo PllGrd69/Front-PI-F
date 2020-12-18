@@ -14,11 +14,14 @@
                     <a href="/">Home</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/cursos">Cursos</a>
+                    <a href="/CursosAdmin">Cursos</a>
                   </li>
                   <li class="nav-item">
                     <a href="/Persona">Persona</a>
                   </li>
+                                      <li class="nav-item">
+                      <a href="/ListarUsuario">Usuario</a>
+                    </li>
                 </ul>
               </div>
             </nav>
@@ -84,26 +87,26 @@
                       <tr>
                         <th scope="col">id</th>
                         <th scope="col">Usuario</th>
+                        <th scope="col">Email</th>
                         <th scope="col">Password</th>
-                        <th scope="col">Estado</th>
                         <th scope="col">Fotex</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr
-                        v-for="(persona, index) in listaPersonas"
+                        v-for="(usuario, index) in listaUsuarios"
                         :key="index"
                       >
-                        <td>{{ persona.id }}</td>
-                        <td>{{ persona.nombre_personal }}</td>
-                        <td>{{ persona.apellido_paterno }}</td>
-                        <td>{{ persona.apellido_materno }}</td>
-                        <td>{{ persona.Genero }}</td>
+                        <td>{{ usuario.id }}</td>
+                        <td>{{ usuario.UserName }}</td>
+                        <td>{{ usuario.Email }}</td>
+                        <td>{{ usuario.Password }}</td>
+                        <td>{{ usuario.Avatar }}</td>
 
                         <td
                           class="text-center"
-                          @click="editarPersona(persona.id)"
+                          @click="editarUsuario(persona.id)"
                         >
                           <i
                             class="fas fa-user-edit text-warning btn_Action"
@@ -111,7 +114,7 @@
                         </td>
                         <td
                           class="text-center"
-                          @click="mensajeEliminarPersona(persona.id)"
+                          @click="mensajeEliminarUsuario(persona.id)"
                         >
                           <i
                             class="fas fa-user-times text-danger btn_Action"
@@ -124,7 +127,7 @@
                 <button
                   type="button"
                   class="btn btn-primary col-sm-3 mt-1"
-                  @click="crearPersona()"
+                  @click="crearUsuario()"
                 >
                   Agregar Nuevo Usuario
                 </button>
@@ -141,23 +144,22 @@
 import axios from "axios";
 import swal from "sweetalert";
 export default {
-  name: "ListarPersonasComponent",
+  name: "ListarUsuarioComponent",
   data() {
     return {
       limit: 0,
       offset: 1,
-      listaPersonas: [],
-      totalPersonas: 0,
+      listaUsuario: [],
     };
   },
   mounted() {
-    this.iniciarTablaPersonas();
+    this.iniciarTablaUsuarios();
   },
   methods: {
-    editarPersona(cod) {
-      this.$router.push({ name: "actualizarpersona", params: { id: cod } });
+    editarUsuario(cod) {
+      this.$router.push({ name: "actualizarusuario", params: { id: cod } });
     },
-    mensajeEliminarPersona(cod) {
+    mensajeEliminarUsuario(cod) {
       swal({
         title: "Eliminar " + cod + "?",
         text: "La eliminacion sera permanente!",
@@ -166,50 +168,50 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          this.eliminarPersona(cod);
+          this.eliminarUsuario(cod);
           swal("Eliminado correctamente :(!", {
             icon: "success",
           });
         }
       });
     },
-    crearPersona() {
-      this.$router.push({ name: "crearpersona", props: { titulo: "CREAR" } });
+    crearUsuario() {
+      this.$router.push({ name: "crearusuario", props: { titulo: "CREAR" } });
     },
-    eliminarPersona(cod) {
+    eliminarUsuario(cod) {
       axios
-        .delete("https://proyintegrador2020.herokuapp.com/v1/persona/" + cod)
+        .delete("https://proyintegrador2020.herokuapp.com/v1/usuario/register" + cod)
         .then((response) => {
           if (response.data == 0) {
             swal("Error", "No se pudo actualizar", "error");
           }
-          this.iniciarTablaPersonas();
+          this.iniciarTablaUsuarios();
         })
         .catch((error) => {
           console.error(error);
         });
     },
-    obtenerPersonas() {
+    obtenerUsuarios() {
       axios
         .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/paginated",
+          "https://proyintegrador2020.herokuapp.com/v1/usuario",
           `{
             "limit": ${this.limit},
             "offset": ${this.offset}
         }`
         )
         .then((response) => {
-          this.listaPersonas = response.data.data;
-          this.totalPersonas = response.data.totalRecords;
+          this.listausuario = response.data.data;
+          this.totalusuario = response.data.totalRecords;
         })
         .catch((error) => {
           console.error(error);
         });
     },
-    iniciarTablaPersonas() {
+    iniciarTablaUsuarios() {
       axios
         .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/paginated",
+          "https://proyintegrador2020.herokuapp.com/v1/usuarios",
           `{
             "limit": 0,
             "offset": 1
@@ -217,7 +219,7 @@ export default {
         )
         .then((response) => {
           this.limit = response.data.totalRecords;
-          this.obtenerPersonas();
+          this.obtenerUsuarios();
         })
         .catch((error) => {
           console.error(error);
