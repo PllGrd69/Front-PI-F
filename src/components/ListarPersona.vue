@@ -187,7 +187,7 @@
 <script>
 import axios from "axios";
 // import swal from "sweetalert";
-import {mapGetters} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 
 export default {
   name: "ListarPersonasComponent",
@@ -196,9 +196,18 @@ export default {
       paginacion: {Limit: 1, Offset: 1},
       listaPersonas: [],
       totalPersonas: 0,
+      // personaEditar: "",
     };
   },
   methods: {
+    ...mapActions(['actualizarPersona']),
+    editarPersona(personaID){// Encontrar la persona seleccionada para ahorar la peticion al API
+      let personSelec = this.listaPersonas.find(persona => {
+        if (persona.id == personaID) return persona;
+      } )
+      this.actualizarPersona(personSelec)
+      this.$router.push({name: "AddPersona"})
+    },
     cargarListaPersona(){
       let config = {
         headers: {
@@ -207,10 +216,8 @@ export default {
       }
       this.paginacion.Limit = parseInt(this.paginacion.Limit) 
       this.paginacion.Offset = parseInt(this.paginacion.Offset) 
-      console.log(this.paginacion)
       this.axios.post("/persona/paginated", this.paginacion, config)
       .then(res =>{
-        console.log(res.data.data)
         this.listaPersonas = res.data.data
       })
       .catch(e =>{
@@ -222,6 +229,7 @@ export default {
     }
   },
   mounted() {
+      this.actualizarPersona('')
       let config = {
         headers: {
           Authorization:  "Bearer" + this.getToken    

@@ -5,11 +5,15 @@ import router from '../router';
 
 export default createStore({
   state: {
+    /* Variables uso de autentificacion y rol de usuario */
     token: '',
     usuarioDB: '',
     rolUsuario: '',
+    /* Variables de uso general Del sistema*/
+    personaUpdate: '',
   },
   mutations: {
+    /* Metodos para mutar uso general, en rol y autentificaciom */
     obtenerUsuario(state, payload){
       state.token = payload;
       if (payload === '') {
@@ -21,9 +25,15 @@ export default createStore({
     },
     asijnarRol(state, payload){
       state.rolUsuario = payload;
+    },
+    /* Uso de matacion de variables segun se requiera el usuario */
+    actualizarPersona: (state, playload) => {
+      // console.log(playload)
+      state.personaUpdate = playload;
     }
   },
   actions: {
+    /* Metodos para activar la autentificiacion y control invocaciones */
     guardarUsuario({commit}, payload) {
       localStorage.setItem('token', payload);
       commit('obtenerUsuario', payload)
@@ -42,24 +52,30 @@ export default createStore({
       }
     },
     cambiarRol({commit}, payload){
-      console.log(payload)
       commit('asijnarRol', payload)
+    },
+    /* USO especifico para invocar metodos que el usuario requiera */
+    actualizarPersona: ({commit}, payload) => {
+      commit('actualizarPersona', payload);
     }
   },
   modules: {
   },
   getters: {
+    /* Metodos get para uso de roles y autentificaciones */
     estaActivo: state => !!state.token,
     rolesUsuario: state => {
       return state.usuarioDB;
     },
     rolUsuarioEstado: state => {
-      console.log("roollllllll")
       return state.rolUsuario;
     },
     getToken: state => {
       return state.token
-    }
+    },
+    /* Metodos para uso general, para acciones del usuario */
+    getPersonaUpdate: state => state.personaUpdate,
+    
   }
 })
  

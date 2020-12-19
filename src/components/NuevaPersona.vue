@@ -11,13 +11,14 @@
               >
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item">
-                    <a href="/">Home</a>
+                    <router-link to="/">Home</router-link>
                   </li>
                   <li class="nav-item">
-                    <a href="/cursos">Cursos</a>
+                    <!-- <router-link to="/cursos">Cursos</router-link> -->
+                    <a >Cursos</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/Persona">Persona</a>
+                    <router-link to="/Persona">Persona</router-link>
                   </li>
                 </ul>
               </div>
@@ -59,14 +60,14 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link
+                <!-- <router-link
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
-                >
+                > -->
                   <!--  <div class="button">
                     <a href="#" class="main-btn">Añadir Sucursal</a>
                   </div>-->
-                </router-link>
+                <!-- </router-link> -->
               </div>
             </div>
           </div>
@@ -75,7 +76,7 @@
               <div class="corses-singel-left">
                 <div class="container">
                   <h2 v-if="actualizar">
-                    Actualizar <strong>{{ id_persona_url }}</strong>
+                    Actualizar a {{nombrePersonaUpdate}} con el id: <strong>{{ this.persona.ID }}</strong>
                   </h2>
                   <h2 v-else>Crear Persona</h2>
                   <hr class="divider my-4" />
@@ -88,7 +89,7 @@
                   </button>
                   <form
                     class="mt-4"
-                    @submit.prevent="crearPersona()"
+                    @submit.prevent="this.estadoActualizarCrear()"
                   >
                     <div class="form-group row">
                       <label for="nombrePersona" class="col-sm-2 col-form-label"
@@ -239,13 +240,14 @@
 <script>
 import Swal from 'sweetalert2';
 import axios from "axios";
-import {mapGetters} from 'vuex';
+import {mapGetters, mapActions} from 'vuex';
 export default {
   name: "NuevaPersonaComponent",
   props: ["titulo"],
   data() {
     return {
       persona: {
+        ID: 0,
         Nombre: "",
         ApellidoPat: "",
         ApellidoMat: "",
@@ -253,22 +255,54 @@ export default {
         Dni: "",
         FechaNac: "",
       },
-      id_persona_url: null,
+      nombrePersonaUpdate: "",
       actualizar: false,
     };
   },
-  mounted() {
-    if (this.$route.params.id) {
-      this.id_persona_url = this.$route.params.id;
+  created() {
+    if (this.getPersonaUpdate){
+      this.nombrePersonaUpdate = this.getPersonaUpdate.nombre;
+      this.persona.ID = this.getPersonaUpdate.id;
+      this.persona.Nombre = this.getPersonaUpdate.nombre;
+      this.persona.ApellidoPat = this.getPersonaUpdate.apellidoPaterno;
+      this.persona.ApellidoMat = this.getPersonaUpdate.apellidoMaterno;
+      this.persona.Genero = this.getPersonaUpdate.genero;
+      this.persona.Dni = this.getPersonaUpdate.DNI;
+      this.persona.FechaNac = this.getPersonaUpdate.fechaDeNacimiento.substring(0,10);
       this.actualizar = true;
-      this.obtenerPersona();
-    } else {
+    } else{
       this.actualizar = false;
     }
   },
   methods: {
     listarPersona() {
       this.$router.push({ name: "ListarPersona" });
+    },
+    estadoActualizarCrear(){
+      if(!this.actualizar){
+        console.log("Creando")
+         this.crearPersona();
+      }else {
+        this.actualizarPersona();
+        console.log("Actualizando")
+      } 
+    },
+    actualizarPersona(){
+      //Creando el Bearer Token
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      /* Peticion put update persona */
+      this.axios.put("/persona/update", this.persona, config)
+      .then(res =>{
+        this.mensajeForms("success", "Actualizado", res.data.mensaje)
+        this.$router.push({ name: "ListarPersona" });
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"No se actualizo", e.response.data)
+      })
     },
     crearPersona() {//Metodo para registrar una persona
       //Creando el Bearer Token
@@ -284,8 +318,6 @@ export default {
       })
       .catch(e =>{
         this.mensajeForms('error',"No registrado", e.response.data)
-        // this.mensajeForms("error", "No registrado", res.response.data)
-        // console.log(e.response.data)
       })
     },
     mensajeForms(iconMsg, title, mensajetStr){
@@ -297,7 +329,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getToken']),
+    ...mapGetters(['getToken', 'getPersonaUpdate']),
   },
 };
 </script>

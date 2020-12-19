@@ -17,7 +17,7 @@
                     <a href="/cursos">Cursos</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/Persona">Persona</a>
+                    <router-link to="/Persona">Persona</router-link>
                   </li>
                 </ul>
               </div>
