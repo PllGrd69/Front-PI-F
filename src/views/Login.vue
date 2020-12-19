@@ -59,7 +59,7 @@ import router from '../router'
 export default {
   data(){
     return {
-      usuario: {Email: 'hectorlimahuaya@upeu.edu.pe', Password: '12567%Ac'},
+      usuario: {Email: 'hectorlimahuaya@upeu.edu.pee', Password: '12567%Ac'},
       isLoging : false
     }
   },
@@ -74,15 +74,15 @@ export default {
         console.log("Se inicio sesion")
         this.guardarUsuario(token)
         router.push({ name: "Home" });
-        this.mensajeError('success', 'Bienbenido, welcome, bienbenute, habla pe causita')
+        this.mensajeForms('success', 'Bienbenido, welcome, bienbenute, habla pe causita')
         
       })
       .catch(e=>{
         this.isLoging = false;
-        this.mensajeError('error', e.response.data)
+        this.mensajeForms('error', e.response.data)
       })
     },
-    mensajeError(iconMsg, mensajetStr){
+    mensajeForms(iconMsg, mensajetStr){
       Swal.mixin({
         toast: true,
         position: 'top-end',

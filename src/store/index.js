@@ -54,7 +54,11 @@ export default createStore({
       return state.usuarioDB;
     },
     rolUsuarioEstado: state => {
+      console.log("roollllllll")
       return state.rolUsuario;
+    },
+    getToken: state => {
+      return state.token
     }
   }
 })

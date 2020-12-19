@@ -20,12 +20,17 @@ const routes = [
     path: '/CursosAdmin',
     name: 'CursosAdmin',
     component: () => import('../components/CursosAdmin.vue'),
+    meta: {
+      requiredAuth: true
+    }
   },  
   {
     path: '/AddCursos',
     name: 'AddCursosAdmin',
     component: () => import('../components/NuevoCurso.vue'),
-
+    meta: {
+      requiredAuth: true
+    }
   },
   {
     path: '/Login',

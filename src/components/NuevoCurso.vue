@@ -59,14 +59,14 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link
+                <!-- <router-link
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
-                >
+                > -->
                   <!--  <div class="button">
                     <a href="#" class="main-btn">Añadir Sucursal</a>
                   </div>-->
-                </router-link>
+                <!-- </router-link> -->
               </div>
             </div>
           </div>
@@ -82,14 +82,11 @@
                   <button
                     type="button"
                     class="btn btn-primary mb-2 col-sm-2 mt-1"
-                    @click="menuPrincipal()"
+                    @click="retrocederCursoAdmin()"
                   >
                     ATRAS
                   </button>
-                  <form
-                    class="mt-4"
-                    @submit.prevent="crearOrActualizarCurso()"
-                  >
+                  <form @submit.prevent="registrarCurso()" class="mt-4" >
                     <div class="form-group row">
                       <label for="nombreCurso" class="col-sm-2 col-form-label"
                         >Nombre</label
@@ -100,7 +97,7 @@
                           class="form-control"
                           id="nombre"
                           placeholder="Nombre del Curso"
-                          v-model="Curso.Nombre"
+                          v-model="curso.Nombre"
                         />
                       </div>
                     </div>
@@ -116,7 +113,7 @@
                           class="form-control"
                           id="Detalle"
                           placeholder="Detalle"
-                          v-model="Curso.Detalle"
+                          v-model="curso.Detalle"
                         />
                       </div>
                     </div>
@@ -139,127 +136,60 @@
 </template>
 
 <script>
-import swal from "sweetalert";
+import {mapGetters} from 'vuex'
 import axios from "axios";
+import Swal from 'sweetalert2';
 export default {
   name: "NuevaPersonaComponent",
   props: ["titulo"],
   data() {
     return {
-      Curso: {
-        Nombre: "",
-        Detalle: "",
+      curso: { Nombre: "", Detalle: "",
       },
-      id_persona_url: null,
-      actualizar: false,
+      // id_persona_url: null,
+      // actualizar: false,
     };
   },
-  mounted() {
-    if (this.$route.params.id) {
-      this.id_persona_url = this.$route.params.id;
-      this.actualizar = true;
-      this.obtenerCurso();
-    } else {
-      this.actualizar = false;
+  // mounted() {
+  //   if (this.$route.params.id) {
+  //     this.id_persona_url = this.$route.params.id;
+  //     this.actualizar = true;
+  //     this.obtenerCurso();
+  //   } else {
+  //     this.actualizar = false;
+  //   }
+  // },
+  methods: {
+    retrocederCursoAdmin() {
+      this.$router.push({ name: "CursosAdmin" });
+    },
+    registrarCurso(){
+      let config = {
+        headers: {
+          Authorization:  "Bearer"+this.getToken    
+        }
+      }
+      this.axios.post("/curso/registrar", this.curso, config )
+      .then(res =>{
+        console.log(res.data.mensaje)
+        this.$router.push({name: "CursosAdmin"})
+        this.mensajeForms('success',"Registrado", res.data.mensaje)
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"No registrado", e.response.data)
+      })
+    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
     }
   },
-
-  methods: {
-    menuPrincipal() {
-      this.$router.push({ name: "Home" });
-    },
-    obtenerCurso() {
-      axios
-        .get(
-          "https://proyintegrador2020.herokuapp.com/v1/curso/allCurso" +
-            this.id_persona_url
-        )
-        .then((response) => {
-          this.curso.Nombre = response.data.Nombre;
-          this.persona.Detalle = response.data.Detalle;
-
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    mensajeCrearCurso(nombre) {
-      swal(
-        "Creado Correctamente",
-        "La persona " + nombre + " se registro en la BD",
-        "success"
-      );
-    },
-    mensajeActualizarCurso(nombre) {
-      swal(
-        "Actualizado Correctamente",
-        "Se actualizo " + nombre + " correctamente en la BD",
-        "success"
-      );
-    },
-    mensajeErrorGuardaCambios(cadena) {
-      swal("Error al guardar cambios", cadena, "error", {
-        className: "red-bg",
-      });
-    },
-    crearOrActualizarCurso() {
-      if (this.actualizar) {
-        this.actualizarCurso();
-      } else {
-        this.crearCurso();
-      }
-    },
-    actualizarCurso() {
-      axios
-        .put(
-          "https://proyintegrador2020.herokuapp.com/v1/curso/actualizar",
-          `{
-            "ID": ${this.id_persona_url},
-            "Nombre": "${this.Curso.Nombre}",
-            "Detalle": "${this.Curso.Detalle}",
-
-          }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeActualizarCurso(
-            this.Curso.Nombre +
-              " " +
-              this.Curso.Detalle +
-              " " 
-
-          );
-          this.$router.push({ name: "Home" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo actualizar");
-        });
-    },
-    crearCurso() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/curso/registrar",
-          `{
-        "Nombre": "${this.Curso.Nombre}",
-        "Detalle": "${this.Curso.Detalle}",
-      }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeCrearCurso(
-            this.Curso.Nombre +
-              " " +
-              this.Curso.Detalle +
-              " "
-          );
-          this.$router.push({ name: "Home" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo crear a la persona");
-        });
-    },
+  computed: {
+    ...mapGetters(['getToken']),
   },
+  
 };
 </script>

@@ -64,14 +64,14 @@
           </div>
           <div class="col-lg-6 col-md-6">
             <div class="support-button d-none d-md-block">
-              <router-link
+              <!-- <router-link
                 to="/cursosadmin/adduaform"
                 class="nav-link text-light"
-              >
+              > -->
                 <div class="button">
                   <a href="#" class="main-btn">Añadir tipo unidad Academica</a>
                 </div>
-              </router-link>
+              <!-- </router-link> -->
             </div>
           </div>
           <div class="col-lg-12">
@@ -116,11 +116,11 @@
                   </div>
                   <div class="col-lg-6 col-md-6">
                     <div class="support-button d-none d-md-block">
-                      <router-link
+                      <!-- <router-link
                         to="/cursosadmin/adduaform"
                         class="nav-link text-light"
                       >
-                      </router-link>
+                      </router-link> -->
                     </div>
                   </div>
                 </div>
@@ -144,10 +144,9 @@
                               <th scope="col">Detalle</th>
                               <th scope="col">IMG</th>
                               <th scope="col">Estado</th>
-                              <th scope="col"></th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <!-- <tbody>
                             <tr
                               v-for="(curso, index) in listaCursos"
                               :key="index"
@@ -175,16 +174,10 @@
                                 ></i>
                               </td>
                             </tr>
-                          </tbody>
+                          </tbody> -->
                         </table>
                       </div>
-                      <button
-                        type="button"
-                        class="btn btn-primary col-sm-3 mt-1"
-                        @click="crearCurso()"
-                      >
-                        Agregar Nuevo Curso
-                      </button>
+                      <button type="button" class="btn btn-primary col-sm-3 mt-1" @click="crearCurso()">Agregar Nuevo Curso</button>
                     </div>
                   </div>
                 </div>
@@ -199,143 +192,16 @@
 </template>
 
 <script>
-import swal from "sweetalert";
-import axios from "axios";
+// import swal from "sweetalert";
+// import axios from "axios";
+import router from '../router'
 export default {
-  name: "CursoAdmin",
-  props: ["titulo"],
-  data() {
-    return {
-      curso: {
-        Nombre: "",
-        Apellido_paterno: "",
-        Apellido_materno: "",
-        Genero: "M",
-        Dni: "",
-        Fecha_nacimiento: "",
-      },
-      id_persona_url: null,
-      actualizar: false,
-    };
-  },
-  mounted() {
-    if (this.$route.params.id) {
-      this.id_persona_url = this.$route.params.id;
-      this.actualizar = true;
-      this.obtenerCurso();
-    } else {
-      this.actualizar = false;
-    }
-  },
-
   methods: {
-    menuPrincipal() {
-      this.$router.push({ name: "principal" });
-    },
-    obtenerCurso() {
-      axios
-        .get(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/25" +
-            this.id_persona_url
-        )
-        .then((response) => {
-          this.persona.Nombre = response.data.nombre_personal;
-          this.persona.Apellido_paterno = response.data.apellido_paterno;
-          this.persona.Apellido_materno = response.data.apellido_materno;
-          this.persona.Dni = response.data.dni;
-          this.persona.Fecha_nacimiento = response.data.fecha_nacimiento;
-          this.persona.Genero = response.data.Genero;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    mensajeCrearCurso(nombre) {
-      swal(
-        "Creado Correctamente",
-        "La persona " + nombre + " se registro en la BD",
-        "success"
-      );
-    },
-    mensajeActualizarCurso(nombre) {
-      swal(
-        "Actualizado Correctamente",
-        "Se actualizo " + nombre + " correctamente en la BD",
-        "success"
-      );
-    },
-    mensajeErrorGuardaCambios(cadena) {
-      swal("Error al guardar cambios", cadena, "error", {
-        className: "red-bg",
-      });
-    },
-    crearOrActualizarCurso() {
-      if (this.actualizar) {
-        this.actualizarCurso();
-      } else {
-        this.crearCurso();
-      }
-    },
-    actualizarCurso() {
-      axios
-        .put(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-            "ID": ${this.id_persona_url},
-            "Nombre": "${this.persona.Nombre}",
-            "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-            "ApellidoMaterno": "${this.persona.Apellido_materno}",
-            "Genero": "${this.persona.Genero}",
-            "Dni": "${this.persona.Dni}",
-            "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-          }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeActualizarCurso(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo actualizar");
-        });
-    },
-    crearCurso() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-        "Nombre": "${this.persona.Nombre}",
-        "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-        "ApellidoMaterno": "${this.persona.Apellido_materno}",
-        "Genero": "${this.persona.Genero}",
-        "Dni": "${this.persona.Dni}",
-        "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-      }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeCrearCurso(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo crear a la persona");
-        });
-    },
-  },
+    crearCurso(){
+      console.log("Presionado")
+      router.push({name: "AddCursosAdmin"})
+    }
+  }
 };
 </script>
 
