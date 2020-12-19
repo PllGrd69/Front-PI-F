@@ -70,16 +70,16 @@
                 >
                   <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
-                      <a href="/">Home</a>
+                      <router-link to="/">Home</router-link>
                     </li>
                     <li class="nav-item">
-                      <a href="/CursosAdmin">Cursos</a>
+                      <router-link to="/CursosAdmin">Cursos</router-link>
                     </li>
                     <li class="nav-item">
-                      <a href="/Persona">Persona</a>
+                      <router-link to="/Persona">Persona</router-link>
                     </li>
                     <li class="nav-item">
-                      <a href="/ListarUsuario">Usuario</a>
+                      <router-link to="/ListarUsuario">Usuario</router-link>
                     </li>
                   </ul>
                 </div>

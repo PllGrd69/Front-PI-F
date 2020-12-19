@@ -68,14 +68,14 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link
+                <!-- <router-link
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
-                >
+                > -->
                   <!--  <div class="button">
                     <a href="#" class="main-btn">Añadir Sucursal</a>
                   </div>-->
-                </router-link>
+                <!-- </router-link> -->
               </div>
             </div>
           </div>
