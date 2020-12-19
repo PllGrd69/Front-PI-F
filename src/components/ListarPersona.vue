@@ -205,7 +205,6 @@ export default {
           Authorization:  "Bearer"+this.getToken    
         }
       }
-
       this.paginacion.Limit = parseInt(this.paginacion.Limit) 
       this.paginacion.Offset = parseInt(this.paginacion.Offset) 
       console.log(this.paginacion)
@@ -217,6 +216,9 @@ export default {
       .catch(e =>{
         console.log(e.response.data)
       })
+    },
+    crearPersona(){
+      this.$router.push({name: "AddPersona"});
     }
   },
   mounted() {
@@ -237,7 +239,6 @@ export default {
   },
   computed: {
     ...mapGetters(['getToken']),
-  }
-
+  },
 };
 </script>

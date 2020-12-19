@@ -82,17 +82,17 @@
                   <button
                     type="button"
                     class="btn btn-primary mb-2 col-sm-2 mt-1"
-                    @click="menuPrincipal()"
+                    @click="listarPersona()"
                   >
                     ATRAS
                   </button>
                   <form
                     class="mt-4"
-                    @submit.prevent="crearOrActualizarPersona()"
+                    @submit.prevent="crearPersona()"
                   >
                     <div class="form-group row">
                       <label for="nombrePersona" class="col-sm-2 col-form-label"
-                        >Nombre Personal</label
+                        >Nombres</label
                       >
                       <div class="col-sm-10">
                         <input
@@ -116,7 +116,7 @@
                           class="form-control"
                           id="apellidoPaterno"
                           placeholder="Simoni"
-                          v-model="persona.Apellido_paterno"
+                          v-model="persona.ApellidoPat"
                         />
                       </div>
                     </div>
@@ -132,7 +132,7 @@
                           class="form-control"
                           id="apellidoMaterno"
                           placeholder="Simoni"
-                          v-model="persona.Apellido_materno"
+                          v-model="persona.ApellidoMat"
                         />
                       </div>
                     </div>
@@ -164,7 +164,7 @@
                           class="form-control"
                           id="apellidoMaterno"
                           placeholder="AAAA-MM-DD"
-                          v-model="persona.Fecha_nacimiento"
+                          v-model="persona.FechaNac"
                         />
                       </div>
                     </div>
@@ -208,7 +208,7 @@
                                 name="gridRadios"
                                 id="gridRadios2"
                                 value="O"
-                                v-model="persona.Genero"
+                                v-model="this.persona.Genero"
                               />
                               <label class="form-check-label" for="gridRadios2">
                                 Otro
@@ -237,8 +237,9 @@
 </template>
 
 <script>
-import swal from "sweetalert";
+import Swal from 'sweetalert2';
 import axios from "axios";
+import {mapGetters} from 'vuex';
 export default {
   name: "NuevaPersonaComponent",
   props: ["titulo"],
@@ -246,11 +247,11 @@ export default {
     return {
       persona: {
         Nombre: "",
-        Apellido_paterno: "",
-        Apellido_materno: "",
+        ApellidoPat: "",
+        ApellidoMat: "",
         Genero: "M",
         Dni: "",
-        Fecha_nacimiento: "",
+        FechaNac: "",
       },
       id_persona_url: null,
       actualizar: false,
@@ -265,114 +266,38 @@ export default {
       this.actualizar = false;
     }
   },
-
   methods: {
-    menuPrincipal() {
-      this.$router.push({ name: "principal" });
+    listarPersona() {
+      this.$router.push({ name: "ListarPersona" });
     },
-    obtenerPersona() {
-      axios
-        .get(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/25" +
-            this.id_persona_url
-        )
-        .then((response) => {
-          this.persona.Nombre = response.data.nombre_personal;
-          this.persona.Apellido_paterno = response.data.apellido_paterno;
-          this.persona.Apellido_materno = response.data.apellido_materno;
-          this.persona.Dni = response.data.dni;
-          this.persona.Fecha_nacimiento = response.data.fecha_nacimiento;
-          this.persona.Genero = response.data.Genero;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    mensajeCrearPersona(nombre) {
-      swal(
-        "Creado Correctamente",
-        "La persona " + nombre + " se registro en la BD",
-        "success"
-      );
-    },
-    mensajeActualizarPersona(nombre) {
-      swal(
-        "Actualizado Correctamente",
-        "Se actualizo " + nombre + " correctamente en la BD",
-        "success"
-      );
-    },
-    mensajeErrorGuardaCambios(cadena) {
-      swal("Error al guardar cambios", cadena, "error", {
-        className: "red-bg",
-      });
-    },
-    crearOrActualizarPersona() {
-      if (this.actualizar) {
-        this.actualizarPersona();
-      } else {
-        this.crearPersona();
+    crearPersona() {//Metodo para registrar una persona
+      //Creando el Bearer Token
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
       }
+      this.axios.post("/persona/insert", this.persona, config)
+      .then(res =>{
+        this.mensajeForms("success", "Registrado",res.data.mensaje)
+        this.$router.push({ name: "ListarPersona" });
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"No registrado", e.response.data)
+        // this.mensajeForms("error", "No registrado", res.response.data)
+        // console.log(e.response.data)
+      })
     },
-    actualizarPersona() {
-      axios
-        .put(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-            "ID": ${this.id_persona_url},
-            "Nombre": "${this.persona.Nombre}",
-            "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-            "ApellidoMaterno": "${this.persona.Apellido_materno}",
-            "Genero": "${this.persona.Genero}",
-            "Dni": "${this.persona.Dni}",
-            "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-          }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeActualizarPersona(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo actualizar");
-        });
-    },
-    crearPersona() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-        "Nombre": "${this.persona.Nombre}",
-        "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-        "ApellidoMaterno": "${this.persona.Apellido_materno}",
-        "Genero": "${this.persona.Genero}",
-        "Dni": "${this.persona.Dni}",
-        "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-      }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeCrearPersona(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo crear a la persona");
-        });
-    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
+    }
+  },
+  computed: {
+    ...mapGetters(['getToken']),
   },
 };
 </script>
