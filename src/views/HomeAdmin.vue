@@ -189,16 +189,7 @@ export default {
     }
   },
   computed: {
-<<<<<<< HEAD
-    ...mapGetters(['estaActivo']),
-    ...mapGetters(['tipoUsuario'])
   }
-=======
-    ...mapGetters(['estaActivo', 'rolesUsuario','rolUsuarioEstado']),
-  },
-  components: {},
->>>>>>> c3b648a3e06ac3d365a72e2f8a527ae1023d41a3
-};
 </script>
 
 <style >
