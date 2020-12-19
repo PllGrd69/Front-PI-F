@@ -200,7 +200,8 @@ export default {
         this.listaCursos  = res.data;
       })
       .catch(e =>{
-        this.mensajeForms('error',"Sin registro", e.response.data)
+        console.log(e.response.data)
+        // this.mensajeForms('error',"Sin registro", e.response.data)
       })
   },
   computed: {

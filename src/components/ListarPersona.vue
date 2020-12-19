@@ -82,7 +82,7 @@
           <div class="row">
             <div class="col-lg-12">
               <div class="corses-singel-left">
-                <form class="form-inline" @submit.prevent="obtenerPersonas()">
+                <form class="form-inline" @submit.prevent="cargarListaPersona()">
                   <div class="form-group row col-sm-6">
                     <label for="inputEmail3" class="col-sm-1 col-form-label"
                       >Limit</label
@@ -91,7 +91,7 @@
                       <input
                         type="number"
                         class="form-control"
-                        v-model="limit"
+                        v-model="paginacion.Limit"
                       />
                     </div>
                   </div>
@@ -103,7 +103,7 @@
                       <input
                         type="number"
                         class="form-control"
-                        v-model="offset"
+                        v-model="paginacion.Offset"
                       />
                     </div>
                   </div>
@@ -142,12 +142,12 @@
                         :key="index"
                       >
                         <td>{{ persona.id }}</td>
-                        <td>{{ persona.nombre_personal }}</td>
-                        <td>{{ persona.apellido_paterno }}</td>
-                        <td>{{ persona.apellido_materno }}</td>
-                        <td>{{ persona.Genero }}</td>
-                        <td>{{ persona.dni }}</td>
-                        <td>{{ persona.fecha_nacimiento }}</td>
+                        <td>{{ persona.nombre }}</td>
+                        <td>{{ persona.apellidoPaterno }}</td>
+                        <td>{{ persona.apellidoMaterno }}</td>
+                        <td>{{ persona.genero }}</td>
+                        <td>{{ persona.DNI }}</td>
+                        <td>{{ persona.fechaDeNacimiento }}</td>
                         <td
                           class="text-center"
                           @click="editarPersona(persona.id)"
@@ -186,90 +186,58 @@
 
 <script>
 import axios from "axios";
-import swal from "sweetalert";
+// import swal from "sweetalert";
+import {mapGetters} from 'vuex';
+
 export default {
   name: "ListarPersonasComponent",
   data() {
     return {
-      limit: 0,
-      offset: 1,
+      paginacion: {Limit: 1, Offset: 1},
       listaPersonas: [],
       totalPersonas: 0,
     };
   },
-  mounted() {
-    this.iniciarTablaPersonas();
-  },
   methods: {
-    editarPersona(cod) {
-      this.$router.push({ name: "actualizarpersona", params: { id: cod } });
-    },
-    mensajeEliminarPersona(cod) {
-      swal({
-        title: "Eliminar " + cod + "?",
-        text: "La eliminacion sera permanente!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          this.eliminarPersona(cod);
-          swal("Eliminado correctamente :(!", {
-            icon: "success",
-          });
+    cargarListaPersona(){
+      let config = {
+        headers: {
+          Authorization:  "Bearer"+this.getToken    
         }
-      });
-    },
-    crearPersona() {
-      this.$router.push({ name: "crearpersona", props: { titulo: "CREAR" } });
-    },
-    eliminarPersona(cod) {
-      axios
-        .delete("https://proyintegrador2020.herokuapp.com/v1/persona/" + cod)
-        .then((response) => {
-          if (response.data == 0) {
-            swal("Error", "No se pudo actualizar", "error");
-          }
-          this.iniciarTablaPersonas();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    obtenerPersonas() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/paginated",
-          `{
-            "limit": ${this.limit},
-            "offset": ${this.offset}
-        }`
-        )
-        .then((response) => {
-          this.listaPersonas = response.data.data;
-          this.totalPersonas = response.data.totalRecords;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    iniciarTablaPersonas() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/paginated",
-          `{
-            "limit": 0,
-            "offset": 1
-        }`
-        )
-        .then((response) => {
-          this.limit = response.data.totalRecords;
-          this.obtenerPersonas();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
+      }
+
+      this.paginacion.Limit = parseInt(this.paginacion.Limit) 
+      this.paginacion.Offset = parseInt(this.paginacion.Offset) 
+      console.log(this.paginacion)
+      this.axios.post("/persona/paginated", this.paginacion, config)
+      .then(res =>{
+        console.log(res.data.data)
+        this.listaPersonas = res.data.data
+      })
+      .catch(e =>{
+        console.log(e.response.data)
+      })
+    }
   },
+  mounted() {
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.post("/persona/paginated", this.paginacion, config)
+      .then(res =>{
+        this.paginacion.Limit = res.data.totalRecords
+        this.totalPersonas =  res.data.totalRecords
+        this.cargarListaPersona()
+      })
+      .catch(e =>{
+        console.log(e.response.data)
+      })
+  },
+  computed: {
+    ...mapGetters(['getToken']),
+  }
+
 };
 </script>
