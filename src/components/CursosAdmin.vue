@@ -142,39 +142,18 @@
                               <th scope="col">id</th>
                               <th scope="col">Nombre</th>
                               <th scope="col">Detalle</th>
-                              <th scope="col">IMG</th>
-                              <th scope="col">Estado</th>
                             </tr>
                           </thead>
-                          <!-- <tbody>
+                          <tbody>
                             <tr
                               v-for="(curso, index) in listaCursos"
                               :key="index"
                             >
                               <td>{{ curso.id }}</td>
-                              <td>{{ curso.nombre_personal }}</td>
-                              <td>{{ curso.apellido_paterno }}</td>
-                              <td>{{ curso.apellido_materno }}</td>
-                              <td>{{ curso.Genero }}</td>
-
-                              <td
-                                class="text-center"
-                                @click="editarCurso(curso.id)"
-                              >
-                                <i
-                                  class="fas fa-user-edit text-warning btn_Action"
-                                ></i>
-                              </td>
-                              <td
-                                class="text-center"
-                                @click="mensajeEliminarCurso(curso.id)"
-                              >
-                                <i
-                                  class="fas fa-user-times text-danger btn_Action"
-                                ></i>
-                              </td>
+                              <td>{{ curso.nombre }}</td>
+                              <td>{{ curso.descripcion }}</td>
                             </tr>
-                          </tbody> -->
+                          </tbody>
                         </table>
                       </div>
                       <button type="button" class="btn btn-primary col-sm-3 mt-1" @click="crearCurso()">Agregar Nuevo Curso</button>
@@ -193,15 +172,40 @@
 
 <script>
 // import swal from "sweetalert";
-// import axios from "axios";
+import axios from "axios";
 import router from '../router'
+import {mapGetters} from 'vuex'
+
 export default {
   methods: {
     crearCurso(){
       console.log("Presionado")
       router.push({name: "AddCursosAdmin"})
     }
-  }
+  },
+  data(){
+    return{
+      listaCursos: []
+    }
+  },
+  created() { 
+    let config = {
+      headers: {
+        Authorization:  "Bearer"+this.getToken    
+      }
+    }
+    this.axios.get("/curso/allCurso", config )
+      .then(res =>{
+        console.log(res.data)
+        this.listaCursos  = res.data;
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"Sin registro", e.response.data)
+      })
+  },
+  computed: {
+    ...mapGetters(['getToken']),
+  },
 };
 </script>
 

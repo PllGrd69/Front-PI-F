@@ -147,7 +147,7 @@ export default {
       curso: { Nombre: "", Detalle: "",
       },
       // id_persona_url: null,
-      // actualizar: false,
+      actualizar: false,
     };
   },
   // mounted() {
