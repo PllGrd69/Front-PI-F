@@ -67,7 +67,7 @@ const router = createRouter({
 
 router.beforeEach((to,from,next) => {
   const rutaProtegida = to.matched.some(record => record.meta.requiredAuth);
-  if (rutaProtegida && store.state.token) {
+  if (rutaProtegida && store.state.token === '') {
     next({name: 'Login'})
   }else {
     next();

@@ -1,0 +1,91 @@
+[33mcommit c3b648a3e06ac3d365a72e2f8a527ae1023d41a3[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Thu Dec 17 20:41:24 2020 -0500
+
+    Dando roles segun se especifique
+
+[33mcommit 048a35c38d449d8c5323d8fbb7d458c589d9b147[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Thu Dec 17 19:58:46 2020 -0500
+
+    Creando los roles en el menu principal
+
+[33mcommit c9321be222f0bf8c0baa41cb5d3e299d5e432ca8[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Fri Dec 18 10:37:06 2020 -0500
+
+    ALERTAS AL INICAR SESION
+
+[33mcommit c67fce57599b25697daaeeb45248b54426ee9f50[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Fri Dec 18 10:17:38 2020 -0500
+
+    Refactor login
+
+[33mcommit 14bcb2e4efae80b297ec93539fecc8511e3c2ccb[m
+Merge: abf8788 e50f36c
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Fri Dec 18 10:06:29 2020 -0500
+
+    vd
+
+[33mcommit abf8788a7408228a9357609a344cb5e4479d10bf[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Fri Dec 18 09:57:58 2020 -0500
+
+    Protegiendo rutas
+
+[33mcommit e50f36cad5cd39ee59f3330bf8aa49325fcc44d0[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 08:50:59 2020 -0500
+
+    avance
+
+[33mcommit 9d21738f4830d411b50fe576798770da9cfb0c4f[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 07:59:48 2020 -0500
+
+    curso
+
+[33mcommit 0e257160de9caab635baea7dc4d7783f70f4e973[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 07:35:38 2020 -0500
+
+    course
+
+[33mcommit 0231ddde0e9a63699c1dc6fd77beb78fddfc35ee[m
+Merge: 953e2fd fdb31c3
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 07:08:46 2020 -0500
+
+    avance
+
+[33mcommit 953e2fdadefc99d6388e858f835ada3bace5dfec[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 07:05:49 2020 -0500
+
+    avance
+
+[33mcommit fdb31c3baf06a7cb12b029c5be706558d243f6b5[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Fri Dec 18 01:53:00 2020 -0500
+
+    persona form
+
+[33mcommit 172214485c148650fee087bbf48055a960f44678[m
+Author: HectorLiAd <hectorlimahuaya@upeu.edu.pe>
+Date:   Fri Dec 18 00:07:05 2020 -0500
+
+    LOgin proceso
+
+[33mcommit fdc216146c0a55c8dc5c8caf55ba8dae9ab67ffd[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Thu Dec 17 22:32:03 2020 -0500
+
+    Raa
+
+[33mcommit 458a635775fab784cac1ae57053c57ebd6102430[m
+Author: PllGrd69 <mccalloluque@gmail.com>
+Date:   Thu Dec 17 20:04:26 2020 -0500
+
+    init

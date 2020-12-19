@@ -55,7 +55,7 @@
 import axio from "axios";
 import {mapActions} from 'vuex';
 import Swal from 'sweetalert2';
-
+import router from '../router'
 export default {
   data(){
     return {
@@ -71,9 +71,11 @@ export default {
       this.axios.post('/usuariologin/login', this.usuario)
       .then(res =>{
         const token = res.data.token;
+        console.log("Se inicio sesion")
         this.guardarUsuario(token)
+        router.push({ name: "Home" });
         this.mensajeError('success', 'Bienbenido, welcome, bienbenute, habla pe causita')
-        this.$router.push({ name: "Home" });
+        
       })
       .catch(e=>{
         this.isLoging = false;
