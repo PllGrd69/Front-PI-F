@@ -27,7 +27,12 @@
                                       <input type="checkbox" class="custom-control-input" id="customCheck1">
                                       <label class="custom-control-label" for="customCheck1">Recordar Contaseña</label>
                                     </div>
-                                    <button class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">Inciar Sesion</button>
+
+                                    <button :disabled="isLoging" class="btn btn-lg btn-primary btn-block btn-login text-uppercase font-weight-bold mb-2" type="submit">
+                                      <div  v-if="isLoging" class="spinner-border spinner-border-sm"></div>
+                                      Iniciar Sesión
+                                    </button>
+                                    
                                     <div class="text-center disabled">
                                       <a class="small disabled" href="#">Forgot password?</a>
                                       <router-link to="/" class="nav-link text-light">Presiona aca papi</router-link>
@@ -43,7 +48,6 @@
           </div>
       </div>
     </div>
-
   </div>
 </template>
   
@@ -55,21 +59,24 @@ import Swal from 'sweetalert2';
 export default {
   data(){
     return {
-      usuario: {Email: 'hectorlimahuaya@upeu.edu.pe', Password: '12567%Ac'}
+      usuario: {Email: 'hectorlimahuaya@upeu.edu.pe', Password: '12567%Ac'},
+      isLoging : false
     }
   },
   methods: {
     ...mapActions(['guardarUsuario']),
     login() {
-      console.log(this.usuario)
+      this.isLoging = true;
+      // console.log(this.usuario)
       this.axios.post('/usuariologin/login', this.usuario)
       .then(res =>{
         const token = res.data.token;
         this.guardarUsuario(token)
-        this.mensajeError('success', 'Bienbenido, welcome, bienbenute, habla pe causica')
+        this.mensajeError('success', 'Bienbenido, welcome, bienbenute, habla pe causita')
         this.$router.push({ name: "Home" });
       })
       .catch(e=>{
+        this.isLoging = false;
         this.mensajeError('error', e.response.data)
       })
     },
@@ -78,7 +85,7 @@ export default {
         toast: true,
         position: 'top-end',
         showConfirmButton: false,
-        timer: 3000,
+        timer: 2000,
         timerProgressBar: true,
         didOpen: (toast) => {
           toast.addEventListener('mouseenter', Swal.stopTimer)

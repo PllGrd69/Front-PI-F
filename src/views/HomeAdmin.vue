@@ -40,17 +40,18 @@
             </div>
             <div class="col-lg-7 col-md-7">
               <div class="support-button float-right d-none d-md-block">
-                <div class="button float-left">
-                  <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
-                  <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
-                </div>
-                <div class="btn-group ms-3" v-if="estaActivo">
+                
+                <div class="btn-group " v-if="estaActivo">
                   <button type="button" class="btn btn-secondary dropdown-toggle main-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     {{ this.rolUsuarioEstado }}
                   </button>
                   <div class="dropdown-menu dropdown-menu-right ">
                       <button class="dropdown-item main-btn" type="button" v-for="rol in this.rolesUsuario.rol" :key="rol" @click="cambiarRol(rol)"> {{ rol }} </button>
                   </div>
+                  <div class="button float-left ms-3">
+                  <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
+                  <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
+                </div>
                 </div>
               </div>
             </div>
