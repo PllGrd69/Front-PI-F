@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import jwt_decode from "jwt-decode";
 import router from '../router';
+// import { FormTagsPlugin } from 'bootstrap-vue';
 
 export default createStore({
   state: {
@@ -15,7 +16,7 @@ export default createStore({
         state.usuarioDB = ''
       } else {
         state.usuarioDB = jwt_decode(payload);
-        state.rolUsuario = state.usuarioDB.rol[1]; 
+        state.rolUsuario = state.usuarioDB.rol[0]; 
       }
     },
     asijnarRol(state, payload){
@@ -41,6 +42,7 @@ export default createStore({
       }
     },
     cambiarRol({commit}, payload){
+      console.log(payload)
       commit('asijnarRol', payload)
     }
   },
