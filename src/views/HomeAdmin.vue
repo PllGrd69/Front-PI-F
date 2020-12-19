@@ -43,7 +43,14 @@
                 <div class="button float-left">
                   <a href="Login" v-if="!estaActivo" class="main-btn">Login</a>
                   <a href="Login" v-if="estaActivo"  class="main-btn" @click="cerrarSesion()">Cerrar Sesión</a>
-                  <a  @click="mostrarInfor()" class="main-btn">{{tipoUsuario.rol}}</a>
+                </div>
+                <div class="btn-group ms-3" v-if="estaActivo">
+                  <button type="button" class="btn btn-secondary dropdown-toggle main-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    {{ this.rolUsuarioEstado }}
+                  </button>
+                  <div class="dropdown-menu dropdown-menu-right ">
+                      <button class="dropdown-item main-btn" type="button" v-for="rol in this.rolesUsuario.rol" :key="rol" @click="cambiarRol(rol)"> {{ rol }} </button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -176,15 +183,21 @@ export default {
   components: {
   },
   methods: {
-    ...mapActions(['cerrarSesion']),
+    ...mapActions(['cerrarSesion','cambiarRol']),
     mostrarInfor(){
-      console.log(this.tipoUsuario);
+      console.log(this.tipoUsuario.rol);
     }
   },
   computed: {
+<<<<<<< HEAD
     ...mapGetters(['estaActivo']),
     ...mapGetters(['tipoUsuario'])
   }
+=======
+    ...mapGetters(['estaActivo', 'rolesUsuario','rolUsuarioEstado']),
+  },
+  components: {},
+>>>>>>> c3b648a3e06ac3d365a72e2f8a527ae1023d41a3
 };
 </script>
 

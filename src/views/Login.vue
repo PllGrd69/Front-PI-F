@@ -50,6 +50,8 @@
 <script>
 import axio from "axios";
 import {mapActions} from 'vuex';
+import Swal from 'sweetalert2';
+
 export default {
   data(){
     return {
@@ -64,12 +66,28 @@ export default {
       .then(res =>{
         const token = res.data.token;
         this.guardarUsuario(token)
-        console.log(res.data);
+        this.mensajeError('success', 'Bienbenido, welcome, bienbenute, habla pe causica')
+        this.$router.push({ name: "Home" });
       })
       .catch(e=>{
-        console.log(e.response.data);
-        window.alert(e.response.data)
+        this.mensajeError('error', e.response.data)
       })
+    },
+    mensajeError(iconMsg, mensajetStr){
+      Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        }).fire({
+        icon: iconMsg,
+        title: mensajetStr
+        })
     }
   }
 }
