@@ -273,7 +273,6 @@ export default {
       }).then((result) => {
         if (result.isConfirmed) {
           /**Elimando persona  */
-          console.log("/persona/delete/"+personSelec.id)
           this.axios.delete("/persona/delete/"+personSelec.id, config)
           .then(res =>{
             this.mensajeForms("success", "Eliminado", "Se elimino corractemente a la persona con el ID " + res.data.codigo)

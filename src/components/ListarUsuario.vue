@@ -116,8 +116,8 @@
                             <div class="dropdown-menu ">
                               <a v-for="(rol, index) in usuario.rol" :key="rol" class="dropdown-item disabled" href="#">{{ index+1 }} {{ rol.nombre }}</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" @click="agregarRolUsuario(usuario.id)">AGREGAR ROL</a>
-                              <a class="dropdown-item" @click="eliminarRolUsuario(usuario.id)">ELIMINAR ROL</a>
+                              <a class="dropdown-item" @click="agregarRolUsuarioMsg(usuario.id)">AGREGAR ROL</a>
+                              <a class="dropdown-item" @click="eliminarRolUsuarioMsg(usuario.id)">ELIMINAR ROL</a>
                             </div>
                           </div>
 
@@ -144,7 +144,7 @@
                 <button
                   type="button"
                   class="btn btn-primary col-sm-3 mt-1"
-                  @click="crearUsuario()"
+                  @click="agregarUsuario()"
                 >
                   Agregar Nuevo Usuario
                 </button>
@@ -167,13 +167,15 @@ export default {
     return {
       listaUsuarios: [],
       todosLosRoles: "",
-      
     };
   },
   mounted() {
     this.iniciarTablaUsuarios();
   },
   methods: {
+    agregarUsuario(){
+      this.$router.push({name :"AddUsuario"})
+    },
     mostrarListadoUsuario() {
       let config = {
         headers: {
@@ -202,22 +204,48 @@ export default {
         console.log(e.response.data)
       })
     },
-    eliminarRolUsuario(personaID){
+    eliminarRolUsuario(personaID, rolID){
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.delete(`/rolUsuario/eliminar/${personaID}/${rolID}`, config)
+      .then(res =>{
+        
+        this.mensajeForms("success", "Eliminado", "Se elimino corractemente a la persona con el ID " + res.data.codigo)
+        this.mostrarListadoUsuario();
+      })
+      .catch(e =>{
+        this.mensajeForms("error", "Error al eliminar", e.response.data)
+      })
+    },
+    eliminarRolUsuarioMsg(personaID){
+      this.mostrarListadoUsuario();
       // console.log("Eliminar usuario ", personaID)
       var roles = [];
       this.listaUsuarios.find(persona => persona.id == personaID).rol.forEach(rol => roles[rol.nombre] = rol.nombre )
 
-      let tipo = Swal.fire({
-        title: 'Select color',
-        input: 'radio',
-        showCancelButton: true,
+      Swal.fire({
+        title: 'Eliminar ROL',
+        input: 'select',
         inputOptions: roles,
+        inputPlaceholder: 'Seleccione un ROL',
+        showCancelButton: true,
         inputValidator: (value) => {
-          if (value) {
-            console.log("Se selecciono "+ value)
-          }
+          return new Promise((resolve) => {
+            this.obtenerTodosLosRoles();
+            let result = this.todosLosRoles.find(rol => rol.nombre == value)//Validar la seleccion del user
+            if (result) {
+              this.eliminarRolUsuario(personaID, result.id);
+              resolve()
+            } else {
+              resolve('Seleccione un rol para eliminar')
+            } 
+          })
         }
       })
+
     },
     asijnarRolAlUsuario(personaID, rolID){
       var rolUsuario = {RolID: rolID, PersonaID: personaID}
@@ -226,7 +254,7 @@ export default {
           Authorization:  "Bearer" + this.getToken    
         }
       }
-      
+      console.log(rolUsuario)
       this.axios.post("/rolUsuario/registrar",rolUsuario, config)
       .then(res =>{
         this.mostrarListadoUsuario();
@@ -237,7 +265,7 @@ export default {
       })
       
     },
-    agregarRolUsuario(personaID){
+    agregarRolUsuarioMsg(personaID){
       /**Actualizr usuario y su rol, porsi los datos se actualizan */
       this.mostrarListadoUsuario();
       var roles = [];//Guarda los roles segun requira tener el usuario
@@ -253,7 +281,7 @@ export default {
         }
       });
 
-      let value  = Swal.fire({
+      Swal.fire({
         title: 'Creando ROL',
         input: 'select',
         inputOptions: roles,
@@ -261,6 +289,7 @@ export default {
         showCancelButton: true,
         inputValidator: (value) => {
           return new Promise((resolve) => {
+            this.obtenerTodosLosRoles();
             let result = this.todosLosRoles.find(rol => rol.nombre == value)//Validar la seleccion del user
             if (result) {
               this.asijnarRolAlUsuario(personaID, result.id);
@@ -289,3 +318,9 @@ export default {
   }
 };
 </script>
+
+<style>
+  a {
+    cursor: pointer;
+  }
+</style>
