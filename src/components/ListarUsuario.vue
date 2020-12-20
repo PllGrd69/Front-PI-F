@@ -63,11 +63,11 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link
+                <!-- <router-link
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
                 >
-                </router-link>
+                </router-link> -->
               </div>
             </div>
           </div>
@@ -86,11 +86,14 @@
                     <thead>
                       <tr>
                         <th scope="col">id</th>
-                        <th scope="col">Usuario</th>
+                        <th scope="col">Nombre usuario</th>
                         <th scope="col">Email</th>
-                        <th scope="col">Password</th>
-                        <th scope="col">Fotex</th>
-                        <th scope="col"></th>
+                        <th scope="col">DNI</th>
+                        <th scope="col">Estado Persona</th>
+                        <th scope="col">Estado Usuario</th>
+                        <th scope="col">Rol de Usuario</th>
+                        <th scope="col">Editar</th>
+                        <th scope="col">Eliminar</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -99,25 +102,42 @@
                         :key="index"
                       >
                         <td>{{ usuario.id }}</td>
-                        <td>{{ usuario.UserName }}</td>
-                        <td>{{ usuario.Email }}</td>
-                        <td>{{ usuario.Password }}</td>
-                        <td>{{ usuario.Avatar }}</td>
+                        <td>{{ usuario.nombreUsuario }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.dni }}</td>
+                        <td>{{ usuario.estadoPersona }}</td>
+                        <td>{{ usuario.estadoUsuario }}</td>
 
-                        <td
+
+
+
+
+                          <div class="btn-group">
+                            <button type="button" class="main-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Action
+                            </button>
+                            <div class="dropdown-menu ">
+                              <a v-for="(rol, index) in usuario.rol" :key="rol" class="dropdown-item disabled" href="#">{{ index+1 }} {{ rol.nombre }}</a>
+                              <div class="dropdown-divider"></div>
+                              <a class="dropdown-item" href="#" @click="agregarRolUsuario(usuario.id)">AGREGAR ROL</a>
+                              <a class="dropdown-item" href="#">EDITAR ROL</a>
+                            </div>
+                          </div>
+
+                         <td
                           class="text-center"
                           @click="editarUsuario(persona.id)"
                         >
                           <i
-                            class="fas fa-user-edit text-warning btn_Action"
+                            class="btn fas fa-user-edit text-warning btn_Action"
                           ></i>
-                        </td>
-                        <td
+                        </td> 
+                         <td
                           class="text-center"
                           @click="mensajeEliminarUsuario(persona.id)"
                         >
                           <i
-                            class="fas fa-user-times text-danger btn_Action"
+                            class="btn fas fa-user-times text-danger btn_Action"
                           ></i>
                         </td>
                       </tr>
@@ -142,89 +162,116 @@
 
 <script>
 import axios from "axios";
-import swal from "sweetalert";
+import Swal from "sweetalert2";
+import {mapGetters} from 'vuex';
 export default {
   name: "ListarUsuarioComponent",
   data() {
     return {
-      limit: 0,
-      offset: 1,
-      listaUsuario: [],
+      listaUsuarios: [],
+      todosLosRoles: "",
+      
     };
   },
   mounted() {
     this.iniciarTablaUsuarios();
   },
   methods: {
-    editarUsuario(cod) {
-      this.$router.push({ name: "actualizarusuario", params: { id: cod } });
+    mostrarListadoUsuario() {
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.get("/usuario/allUsuario", config)
+      .then(res =>{
+        this.listaUsuarios = res.data;
+      })
+      .catch(e =>{
+        console.log(e.response.data)
+      })
     },
-    mensajeEliminarUsuario(cod) {
-      swal({
-        title: "Eliminar " + cod + "?",
-        text: "La eliminacion sera permanente!",
-        icon: "warning",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        if (willDelete) {
-          this.eliminarUsuario(cod);
-          swal("Eliminado correctamente :(!", {
-            icon: "success",
-          });
+    obtenerTodosLosRoles(){
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.get("/rol/allRoles", config)
+      .then(res =>{
+        this.todosLosRoles = res.data;
+      })
+      .catch(e =>{
+        console.log(e.response.data)
+      })
+    },
+    asijnarRolAlUsuario(personaID, rolID){
+      var rolUsuario = {RolID: rolID, PersonaID: personaID}
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      
+      this.axios.post("/rolUsuario/registrar",rolUsuario, config)
+      .then(res =>{
+        this.mostrarListadoUsuario();
+        this.mensajeForms("success", "Se asijno el rol al usuario", res.data.mensaje)
+      })
+      .catch(e =>{
+        this.mensajeForms("error", "No se asijno el rol al usuario", res.data)
+      })
+      
+    },
+    agregarRolUsuario(personaID){
+      /**Actualizr usuario y su rol, porsi los datos se actualizan */
+      this.mostrarListadoUsuario();
+      var roles = [];//Guarda los roles segun requira tener el usuario
+      /**Verificando de que no tenga el mismo rol  */
+      let rol = this.todosLosRoles.forEach(rol => {//API STREAM
+        let userRol = this.listaUsuarios.find(usuario => {
+          if (usuario.id == personaID){
+            return usuario.rol.find(rolUser => rolUser.nombre == rol.nombre)
+          }
+        })
+        if (!userRol){
+          roles[rol.nombre] = rol.nombre
         }
       });
+
+      let value  = Swal.fire({
+        title: 'Creando ROL',
+        input: 'select',
+        inputOptions: roles,
+        inputPlaceholder: 'Seleccione un ROL',
+        showCancelButton: true,
+        inputValidator: (value) => {
+          return new Promise((resolve) => {
+            let result = this.todosLosRoles.find(rol => rol.nombre == value)//Validar la seleccion del user
+            if (result) {
+              this.asijnarRolAlUsuario(personaID, result.id);
+              resolve()
+            } else {
+              resolve('Seleccione un ROL para el Usuario')
+            } 
+          })
+        }
+      })
     },
-    crearUsuario() {
-      this.$router.push({ name: "crearusuario", props: { titulo: "CREAR" } });
-    },
-    eliminarUsuario(cod) {
-      axios
-        .delete("https://proyintegrador2020.herokuapp.com/v1/usuario/register" + cod)
-        .then((response) => {
-          if (response.data == 0) {
-            swal("Error", "No se pudo actualizar", "error");
-          }
-          this.iniciarTablaUsuarios();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    obtenerUsuarios() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/usuario",
-          `{
-            "limit": ${this.limit},
-            "offset": ${this.offset}
-        }`
-        )
-        .then((response) => {
-          this.listausuario = response.data.data;
-          this.totalusuario = response.data.totalRecords;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    iniciarTablaUsuarios() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/usuarios",
-          `{
-            "limit": 0,
-            "offset": 1
-        }`
-        )
-        .then((response) => {
-          this.limit = response.data.totalRecords;
-          this.obtenerUsuarios();
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
+    }
   },
+  mounted(){
+    this.mostrarListadoUsuario();
+    this.obtenerTodosLosRoles();
+  },
+  computed: {
+    ...mapGetters(['getToken']),
+  }
 };
 </script>

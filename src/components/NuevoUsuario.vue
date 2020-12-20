@@ -11,13 +11,14 @@
               >
                 <ul class="navbar-nav mr-auto">
                   <li class="nav-item">
-                    <a href="/">Home</a>
+                    <router-link to="/">Home</router-link>
                   </li>
                   <li class="nav-item">
-                    <a href="/cursos">Cursos</a>
+                    <!-- <router-link to="/cursos">Cursos</router-link> -->
+                    <a >Cursos</a>
                   </li>
                   <li class="nav-item">
-                    <a href="/Persona">Persona</a>
+                    <router-link to="/Persona">Persona</router-link>
                   </li>
                 </ul>
               </div>
@@ -59,14 +60,14 @@
             </div>
             <div class="col-lg-6 col-md-6">
               <div class="support-button d-none d-md-block">
-                <router-link
+                <!-- <router-link
                   to="/cursosadmin/adduaform"
                   class="nav-link text-light"
-                >
+                > -->
                   <!--  <div class="button">
                     <a href="#" class="main-btn">Añadir Sucursal</a>
                   </div>-->
-                </router-link>
+                <!-- </router-link> -->
               </div>
             </div>
           </div>
@@ -75,48 +76,48 @@
               <div class="corses-singel-left">
                 <div class="container">
                   <h2 v-if="actualizar">
-                    Actualizar <strong>{{ id_persona_url }}</strong>
+                    Actualizar a {{nombrePersonaUpdate}} con el id: <strong>{{ this.persona.ID }}</strong>
                   </h2>
                   <h2 v-else>Crear Usuario</h2>
                   <hr class="divider my-4" />
                   <button
                     type="button"
                     class="btn btn-primary mb-2 col-sm-2 mt-1"
-                    @click="menuPrincipal()"
+                    @click="listarUsuario()"
                   >
                     ATRAS
                   </button>
                   <form
                     class="mt-4"
-                    @submit.prevent="crearOrActualizarPersona()"
+                    @submit.prevent="this.estadoActualizarCrear()"
                   >
                     <div class="form-group row">
                       <label for="nombrePersona" class="col-sm-2 col-form-label"
-                        >UserName</label
+                        >Nombres</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
                           id="nombrePersona"
-                          placeholder="UserName"
+                          placeholder="Jose Juanito"
                           v-model="persona.Nombre"
                         />
                       </div>
                     </div>
                     <div class="form-group row">
                       <label
-                        for="Email"
+                        for="apellidoPaterno"
                         class="col-sm-2 col-form-label"
-                        >Email</label
+                        >Apellido Paterno</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
-                          id="Email"
-                          placeholder="Email"
-                          v-model="persona.Apellido_paterno"
+                          id="apellidoPaterno"
+                          placeholder="Simoni"
+                          v-model="persona.ApellidoPat"
                         />
                       </div>
                     </div>
@@ -124,15 +125,15 @@
                       <label
                         for="apellidoMaterno"
                         class="col-sm-2 col-form-label"
-                        >Clave</label
+                        >Apellido Materno</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
-                          id="Clave"
-                          placeholder="Clave"
-                          v-model="persona.Apellido_materno"
+                          id="apellidoMaterno"
+                          placeholder="Simoni"
+                          v-model="persona.ApellidoMat"
                         />
                       </div>
                     </div>
@@ -164,10 +165,60 @@
                           class="form-control"
                           id="apellidoMaterno"
                           placeholder="AAAA-MM-DD"
-                          v-model="persona.Fecha_nacimiento"
+                          v-model="persona.FechaNac"
                         />
                       </div>
                     </div>
+                    <fieldset class="form-group">
+                      <div class="row">
+                        <legend class="col-form-label col-sm-2 pt-0">
+                          Genero
+                        </legend>
+                        <div class="col-sm-10">
+                          <div class="row">
+                            <div class="form-check col-sm-4">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="gridRadios"
+                                id="gridRadios1"
+                                value="M"
+                                v-model="persona.Genero"
+                              />
+                              <label class="form-check-label" for="gridRadios1">
+                                Masculino
+                              </label>
+                            </div>
+                            <div class="form-check col-sm-4">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="gridRadios"
+                                id="gridRadios2"
+                                value="F"
+                                v-model="persona.Genero"
+                              />
+                              <label class="form-check-label" for="gridRadios2">
+                                Femenino
+                              </label>
+                            </div>
+                            <div class="form-check col-sm-4">
+                              <input
+                                class="form-check-input"
+                                type="radio"
+                                name="gridRadios"
+                                id="gridRadios2"
+                                value="O"
+                                v-model="this.persona.Genero"
+                              />
+                              <label class="form-check-label" for="gridRadios2">
+                                Otro
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </fieldset>
                     <div class="form-group row">
                       <div class="col-sm-12">
                         <button type="submit" class="col-sm-6 btn btn-primary">
@@ -187,140 +238,90 @@
 </template>
 
 <script>
-import swal from "sweetalert";
+import Swal from 'sweetalert2';
 import axios from "axios";
+import {mapGetters, mapActions} from 'vuex';
 export default {
-  name: "NuevaPersonaComponent",
   props: ["titulo"],
   data() {
     return {
-      Usuario: {
-        UserName: "",
-        Email: "",
-        Password: "",
-        Avatar: "",
+      persona: { ID: 0, Nombre: "", ApellidoPat: "", ApellidoMat: "", Genero: "M", Dni: "", FechaNac: "",
       },
-      id_persona_url: null,
+      nombrePersonaUpdate: "",
       actualizar: false,
     };
   },
-  mounted() {
-    if (this.$route.params.id) {
-      this.id_persona_url = this.$route.params.id;
+  created() {
+    if (this.getPersonaUpdate){
+      this.nombrePersonaUpdate = this.getPersonaUpdate.nombre;
+      this.persona.ID = this.getPersonaUpdate.id;
+      this.persona.Nombre = this.getPersonaUpdate.nombre;
+      this.persona.ApellidoPat = this.getPersonaUpdate.apellidoPaterno;
+      this.persona.ApellidoMat = this.getPersonaUpdate.apellidoMaterno;
+      this.persona.Genero = this.getPersonaUpdate.genero;
+      this.persona.Dni = this.getPersonaUpdate.DNI;
+      this.persona.FechaNac = this.getPersonaUpdate.fechaDeNacimiento.substring(0,10);
       this.actualizar = true;
-      this.obtenerPersona();
-    } else {
+    } else{
       this.actualizar = false;
     }
   },
-
   methods: {
-    menuPrincipal() {
-      this.$router.push({ name: "principal" });
+    listarUsuario() {
+      this.$router.push({ name: "ListarUsuario" });
     },
-    obtenerPersona() {
-      axios
-        .get(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/25" +
-            this.id_persona_url
-        )
-        .then((response) => {
-          this.persona.Nombre = response.data.nombre_personal;
-          this.persona.Apellido_paterno = response.data.apellido_paterno;
-          this.persona.Apellido_materno = response.data.apellido_materno;
-          this.persona.Dni = response.data.dni;
-          this.persona.Fecha_nacimiento = response.data.fecha_nacimiento;
-          this.persona.Genero = response.data.Genero;
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    },
-    mensajeCrearPersona(nombre) {
-      swal(
-        "Creado Correctamente",
-        "La persona " + nombre + " se registro en la BD",
-        "success"
-      );
-    },
-    mensajeActualizarPersona(nombre) {
-      swal(
-        "Actualizado Correctamente",
-        "Se actualizo " + nombre + " correctamente en la BD",
-        "success"
-      );
-    },
-    mensajeErrorGuardaCambios(cadena) {
-      swal("Error al guardar cambios", cadena, "error", {
-        className: "red-bg",
-      });
-    },
-    crearOrActualizarPersona() {
-      if (this.actualizar) {
+    estadoActualizarCrear(){
+      if(!this.actualizar){
+        console.log("Creando")
+         this.crearPersona();
+      }else {
         this.actualizarPersona();
-      } else {
-        this.crearPersona();
+        console.log("Actualizando")
+      } 
+    },
+    actualizarPersona(){
+      //Creando el Bearer Token
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
       }
+      /* Peticion put update persona */
+      this.axios.put("/persona/update", this.persona, config)
+      .then(res =>{
+        this.mensajeForms("success", "Actualizado", res.data.mensaje)
+        this.$router.push({ name: "ListarPersona" });
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"No se actualizo", e.response.data)
+      })
     },
-    actualizarPersona() {
-      axios
-        .put(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-            "ID": ${this.id_persona_url},
-            "Nombre": "${this.persona.Nombre}",
-            "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-            "ApellidoMaterno": "${this.persona.Apellido_materno}",
-            "Genero": "${this.persona.Genero}",
-            "Dni": "${this.persona.Dni}",
-            "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-          }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeActualizarPersona(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo actualizar");
-        });
+    crearPersona() {//Metodo para registrar una persona
+      //Creando el Bearer Token
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.post("/persona/insert", this.persona, config)
+      .then(res =>{
+        this.mensajeForms("success", "Registrado",res.data.mensaje)
+        this.$router.push({ name: "ListarPersona" });
+      })
+      .catch(e =>{
+        this.mensajeForms('error',"No registrado", e.response.data)
+      })
     },
-    crearPersona() {
-      axios
-        .post(
-          "https://proyintegrador2020.herokuapp.com/v1/persona/",
-          `{
-        "Nombre": "${this.persona.Nombre}",
-        "ApellidoPaterno": "${this.persona.Apellido_paterno}",
-        "ApellidoMaterno": "${this.persona.Apellido_materno}",
-        "Genero": "${this.persona.Genero}",
-        "Dni": "${this.persona.Dni}",
-        "FechaNacimiento": "${this.persona.Fecha_nacimiento}"
-      }`
-        )
-        .then((response) => {
-          console.log(response.data);
-          this.mensajeCrearPersona(
-            this.persona.Nombre +
-              " " +
-              this.persona.Apellido_paterno +
-              " " +
-              this.persona.Apellido_materno
-          );
-          this.$router.push({ name: "principal" });
-        })
-        .catch((error) => {
-          console.error(error);
-          this.mensajeErrorGuardaCambios("No se puedo crear a la persona");
-        });
-    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
+    }
+  },
+  computed: {
+    ...mapGetters(['getToken', 'getPersonaUpdate']),
   },
 };
 </script>
