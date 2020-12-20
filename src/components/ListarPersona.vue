@@ -147,9 +147,9 @@
                         <td>{{ persona.apellidoMaterno }}</td>
                         <td>{{ persona.genero }}</td>
                         <td>{{ persona.DNI }}</td>
-                        <td>{{ persona.fechaDeNacimiento }}</td>
+                        <td>{{ persona.fechaDeNacimiento.substring(0,10) }}</td>
                         <td
-                          class="text-center"
+                          class="btn text-center"
                           @click="editarPersona(persona.id)"
                         >
                           <i
@@ -157,11 +157,11 @@
                           ></i>
                         </td>
                         <td
-                          class="text-center"
-                          @click="mensajeEliminarPersona(persona.id)"
+                          class="btntext-center"
+                          @click="eliminarPersona(persona.id)"
                         >
                           <i
-                            class="fas fa-user-times text-danger btn_Action"
+                            class="btn fas fa-user-times text-danger btn_Action"
                           ></i>
                         </td>
                       </tr>
@@ -186,7 +186,7 @@
 
 <script>
 import axios from "axios";
-// import swal from "sweetalert";
+import Swal from 'sweetalert2';
 import {mapActions, mapGetters} from 'vuex';
 
 export default {
@@ -224,12 +224,7 @@ export default {
         console.log(e.response.data)
       })
     },
-    crearPersona(){
-      this.$router.push({name: "AddPersona"});
-    }
-  },
-  mounted() {
-      this.actualizarPersona('')
+    cargarLimiteMax(){
       let config = {
         headers: {
           Authorization:  "Bearer" + this.getToken    
@@ -244,9 +239,65 @@ export default {
       .catch(e =>{
         console.log(e.response.data)
       })
+    },
+    crearPersona(){
+      this.$router.push({name: "AddPersona"});
+    },
+    eliminarPersona(personaID){
+      /**Por si el usuario logeado se quiere eliminar */
+      if (personaID == this.getUsuarioSesion._id){
+        this.mensajeForms("error", "No te puede eliminar", "Estas usando el sistema")
+        return;
+      }
+      /**Buscando a la persona de la tabla */
+      let personSelec = this.listaPersonas.find(persona => {
+        if (persona.id == personaID) return persona;
+      });
+      /**Obteniendo la autentificacio TWJ */
+      let config = {
+        headers: {
+          Authorization:  "Bearer"+this.getToken    
+        }
+      }
+      /* Preparando mensaje */
+      Swal.fire({
+        title: `Eliminar a ${personSelec.nombre} con ID: ${personSelec.id}`,
+        text: `Confirme para eliminar!`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        cancelButtonText: 'Cancelar',
+        confirmButtonText: 'Eliminar!'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          /**Elimando persona  */
+          console.log("/persona/delete/"+personSelec.id)
+          this.axios.delete("/persona/delete/"+personSelec.id, config)
+          .then(res =>{
+            this.mensajeForms("success", "Eliminado", "Se elimino corractemente a la persona con el ID " + res.data.codigo)
+          })
+          .catch(e =>{
+            this.mensajeForms("error", "Error al eliminar", e.response.data)
+          })
+          this.cargarLimiteMax();
+        }
+      })
+    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
+    }
+  },
+  mounted() {
+      this.actualizarPersona('')
+      this.cargarLimiteMax();
   },
   computed: {
-    ...mapGetters(['getToken']),
+    ...mapGetters(['getToken','getUsuarioSesion']),
   },
 };
 </script>

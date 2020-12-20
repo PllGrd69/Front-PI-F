@@ -73,6 +73,7 @@ export default createStore({
     getToken: state => {
       return state.token
     },
+    getUsuarioSesion: state => state.usuarioDB,
     /* Metodos para uso general, para acciones del usuario */
     getPersonaUpdate: state => state.personaUpdate,
     

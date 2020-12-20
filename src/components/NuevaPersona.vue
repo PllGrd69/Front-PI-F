@@ -246,14 +246,7 @@ export default {
   props: ["titulo"],
   data() {
     return {
-      persona: {
-        ID: 0,
-        Nombre: "",
-        ApellidoPat: "",
-        ApellidoMat: "",
-        Genero: "M",
-        Dni: "",
-        FechaNac: "",
+      persona: { ID: 0, Nombre: "", ApellidoPat: "", ApellidoMat: "", Genero: "M", Dni: "", FechaNac: "",
       },
       nombrePersonaUpdate: "",
       actualizar: false,
