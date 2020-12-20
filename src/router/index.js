@@ -36,6 +36,9 @@ const routes = [
     path: '/Login',
     name: 'Login',
     component: () => import('../views/Login.vue'),
+    meta: {
+      logeado: false
+    }
   },  
   {
     path: '/Persona',
@@ -72,9 +75,10 @@ const router = createRouter({
 
 router.beforeEach((to,from,next) => {
   const rutaProtegida = to.matched.some(record => record.meta.requiredAuth);
+  const logeadoUsuario = to.matched.some(record => record.meta.logeado);
   if (rutaProtegida && store.state.token === '') {
     next({name: 'Login'})
-  }else {
+  } else {
     next();
   }
 });

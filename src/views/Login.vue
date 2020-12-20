@@ -53,7 +53,7 @@
   
 <script>
 import axio from "axios";
-import {mapActions} from 'vuex';
+import {mapActions, mapGetters} from 'vuex';
 import Swal from 'sweetalert2';
 import router from '../router'
 export default {
@@ -98,6 +98,14 @@ export default {
         title: mensajetStr
         })
     }
+  },
+  created(){
+    if (this.estaActivo){
+      this.$router.push({name: "Home"})
+    }
+  },
+  computed:{
+    ...mapGetters(['estaActivo'])
   }
 }
 </script>

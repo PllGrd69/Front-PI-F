@@ -219,6 +219,8 @@ export default {
       this.axios.post("/persona/paginated", this.paginacion, config)
       .then(res =>{
         this.listaPersonas = res.data.data
+        this.totalPersonas =  res.data.totalRecords
+        this.paginacion.Limit = this.totalPersonas
       })
       .catch(e =>{
         console.log(e.response.data)
@@ -233,7 +235,6 @@ export default {
       this.axios.post("/persona/paginated", this.paginacion, config)
       .then(res =>{
         this.paginacion.Limit = res.data.totalRecords
-        this.totalPersonas =  res.data.totalRecords
         this.cargarListaPersona()
       })
       .catch(e =>{
