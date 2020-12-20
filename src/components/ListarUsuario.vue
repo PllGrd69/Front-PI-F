@@ -109,9 +109,6 @@
                         <td>{{ usuario.estadoUsuario }}</td>
 
 
-
-
-
                           <div class="btn-group">
                             <button type="button" class="main-btn dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                               Action
@@ -119,8 +116,8 @@
                             <div class="dropdown-menu ">
                               <a v-for="(rol, index) in usuario.rol" :key="rol" class="dropdown-item disabled" href="#">{{ index+1 }} {{ rol.nombre }}</a>
                               <div class="dropdown-divider"></div>
-                              <a class="dropdown-item" href="#" @click="agregarRolUsuario(usuario.id)">AGREGAR ROL</a>
-                              <a class="dropdown-item" href="#">EDITAR ROL</a>
+                              <a class="dropdown-item" @click="agregarRolUsuario(usuario.id)">AGREGAR ROL</a>
+                              <a class="dropdown-item" @click="eliminarRolUsuario(usuario.id)">ELIMINAR ROL</a>
                             </div>
                           </div>
 
@@ -134,7 +131,7 @@
                         </td> 
                          <td
                           class="text-center"
-                          @click="mensajeEliminarUsuario(persona.id)"
+                          @click="eliminarRolUsuario(persona.id)"
                         >
                           <i
                             class="btn fas fa-user-times text-danger btn_Action"
@@ -203,6 +200,23 @@ export default {
       })
       .catch(e =>{
         console.log(e.response.data)
+      })
+    },
+    eliminarRolUsuario(personaID){
+      // console.log("Eliminar usuario ", personaID)
+      var roles = [];
+      this.listaUsuarios.find(persona => persona.id == personaID).rol.forEach(rol => roles[rol.nombre] = rol.nombre )
+
+      let tipo = Swal.fire({
+        title: 'Select color',
+        input: 'radio',
+        showCancelButton: true,
+        inputOptions: roles,
+        inputValidator: (value) => {
+          if (value) {
+            console.log("Se selecciono "+ value)
+          }
+        }
       })
     },
     asijnarRolAlUsuario(personaID, rolID){
