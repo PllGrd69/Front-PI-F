@@ -79,6 +79,7 @@
                     Actualizar a {{nombrePersonaUpdate}} con el id: <strong>{{ this.persona.ID }}</strong>
                   </h2>
                   <h2 v-else>Crear Usuario</h2>
+                 
                   <hr class="divider my-4" />
                   <button
                     type="button"
@@ -87,6 +88,94 @@
                   >
                     ATRAS
                   </button>
+
+                   <hr class="my-4" />
+                  <!-- <button class="btn btn-primary ">Seleccionar Persona</button> -->
+                  <div class="row">
+                  <div class="col-md-12">
+                    <div id="card-725447">
+                      <div class="card">
+                        <div class="card-header">
+                          <a class="card-link collapsed" data-toggle="collapse" data-parent="#card-725447" href="#card-element-652623">Buscar Persona</a>
+                        </div>
+                        <div id="card-element-652623" class="collapse">
+                          <div class="card-body">
+                            <!-- TABLA PERSONA -->
+                            <form class="form-inline" @submit.prevent="buscarPersona()">
+                              
+                              <div class="form-group mx-sm-3 mb-2">
+                                <select v-model="buscarPersonaPor" class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+                                  <option value="ID" selected>ID</option>
+                                  <option value="DNI">DNI</option>
+                                  <option value="NOMBRE" >NOMBRE</option>
+                                  <option value="APELLIDO PATERNO">APELLIDO PATERNO</option>
+                                  <option value="APELLIDO MATERNO">APELLIDO MATERNO</option>
+                                </select>
+                              </div>
+
+                              <div class="form-group mx-sm-3 mb-2">
+                                <input v-model="busquedaPersonaText" type="text" class="form-control" id="inputPassword2" :placeholder="'INGRESE EL '+ buscarPersonaPor">
+                              </div>
+                              
+                              <button type="submit" class="btn btn-primary mb-2">Buscar Persona</button>
+                            </form>
+                            <!-- FIN TABLA PERSONA -->
+                            <!-- MOSOTRAR PERSONAS -->
+
+
+                            <div class="row">
+                              <div class="col-md-12">
+                                <div id="card-14272">
+                                  <div class="card">
+                                    <div class="card-header">
+                                      <a class="card-link" data-toggle="collapse" data-parent="#card-14272" href="#card-element-217024">Personas Encontradas {{this.personasBusqueda.length}}</a>
+                                    </div>
+                                    <div id="card-element-217024" class="collapse show">
+                                      <div class="card-body">
+                                        <!-- Lista de personas encontradas -->
+                                        <div class="row">
+                                          <div class="col-md-12">
+                                            <div id="card-14272">
+                                                
+                                              <div v-for="(personita, index) in personasBusqueda" :key="personita" class="card">
+                                                <div class="card-header">
+                                                  <a class="card-link" data-toggle="collapse" data-parent="#card-14283" :href="`#card-persona-`+index">{{ index+1 }}. <strong>{{ "DNI: " + personita.DNI+ " - ID: " + personita.id}}</strong>  </a>
+                                                </div>
+                                                <div :id="`card-persona-`+index" class="collapse">
+                                                  <div class="card-body">
+                                                    otro
+                                                  </div>
+                                                </div>
+                                              </div>
+
+
+                                            </div>
+                                          </div>
+                                        </div>
+                                        <!-- Fin de la lista de personas -->
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            <!-- FIN MOSOTRAR PERSONAS -->
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+
+
+
+
+                  
+                  
                   <form
                     class="mt-4"
                     @submit.prevent="this.estadoActualizarCrear()"
@@ -100,7 +189,7 @@
                           type="text"
                           class="form-control"
                           id="nombrePersona"
-                          placeholder="Jose Juanito"
+                          placeholder="Faraon"
                           v-model="persona.Nombre"
                         />
                       </div>
@@ -116,7 +205,7 @@
                           type="text"
                           class="form-control"
                           id="apellidoPaterno"
-                          placeholder="Simoni"
+                          placeholder="Love"
                           v-model="persona.ApellidoPat"
                         />
                       </div>
@@ -132,7 +221,7 @@
                           type="text"
                           class="form-control"
                           id="apellidoMaterno"
-                          placeholder="Simoni"
+                          placeholder="Shady"
                           v-model="persona.ApellidoMat"
                         />
                       </div>
@@ -245,83 +334,46 @@ export default {
   props: ["titulo"],
   data() {
     return {
-      persona: { ID: 0, Nombre: "", ApellidoPat: "", ApellidoMat: "", Genero: "M", Dni: "", FechaNac: "",
-      },
-      nombrePersonaUpdate: "",
+      personasBusqueda:[],
+      persona:"",
+      buscarPersonaPor: "ID",
       actualizar: false,
+      busquedaPersonaText: ""
     };
   },
-  created() {
-    if (this.getPersonaUpdate){
-      this.nombrePersonaUpdate = this.getPersonaUpdate.nombre;
-      this.persona.ID = this.getPersonaUpdate.id;
-      this.persona.Nombre = this.getPersonaUpdate.nombre;
-      this.persona.ApellidoPat = this.getPersonaUpdate.apellidoPaterno;
-      this.persona.ApellidoMat = this.getPersonaUpdate.apellidoMaterno;
-      this.persona.Genero = this.getPersonaUpdate.genero;
-      this.persona.Dni = this.getPersonaUpdate.DNI;
-      this.persona.FechaNac = this.getPersonaUpdate.fechaDeNacimiento.substring(0,10);
-      this.actualizar = true;
-    } else{
-      this.actualizar = false;
-    }
-  },
-  methods: {
-    listarUsuario() {
-      this.$router.push({ name: "ListarUsuario" });
-    },
-    estadoActualizarCrear(){
-      if(!this.actualizar){
-        console.log("Creando")
-         this.crearPersona();
-      }else {
-        this.actualizarPersona();
-        console.log("Actualizando")
-      } 
-    },
-    actualizarPersona(){
-      //Creando el Bearer Token
-      let config = {
-        headers: {
-          Authorization:  "Bearer" + this.getToken    
-        }
+  methods:{
+    buscarPersona(){
+      let rutaApi = null
+      if (this.buscarPersonaPor === "ID") {
+        rutaApi = "/persona/id/"+this.busquedaPersonaText
+      } else if (this.buscarPersonaPor === 'DNI') {
+        rutaApi = "/persona/dni/"+this.busquedaPersonaText
+      } else if (this.buscarPersonaPor === 'NOMBRE') {
+        rutaApi = "/persona/name/"+this.busquedaPersonaText
+      } else if (this.buscarPersonaPor === 'APELLIDO PATERNO') {
+        rutaApi = "/persona/paterno/"+this.busquedaPersonaText
+      } else if (this.buscarPersonaPor === 'APELLIDO MATERNO') {
+        rutaApi = "/persona/materno/"+this.busquedaPersonaText
       }
-      /* Peticion put update persona */
-      this.axios.put("/persona/update", this.persona, config)
-      .then(res =>{
-        this.mensajeForms("success", "Actualizado", res.data.mensaje)
-        this.$router.push({ name: "ListarPersona" });
-      })
-      .catch(e =>{
-        this.mensajeForms('error',"No se actualizo", e.response.data)
-      })
-    },
-    crearPersona() {//Metodo para registrar una persona
-      //Creando el Bearer Token
-      let config = {
-        headers: {
-          Authorization:  "Bearer" + this.getToken    
+      if (rutaApi && this.busquedaPersonaText){
+        let config = {
+          headers: {
+            Authorization:  "Bearer"+this.getToken    
+          }
         }
+        this.axios.get(rutaApi, config)
+        .then(res =>{
+          this.personasBusqueda = res.data;
+          console.log(this.personasBusqueda)
+        })
+        .catch(e =>{
+          console.log(e.response.data)
+        })
       }
-      this.axios.post("/persona/insert", this.persona, config)
-      .then(res =>{
-        this.mensajeForms("success", "Registrado",res.data.mensaje)
-        this.$router.push({ name: "ListarPersona" });
-      })
-      .catch(e =>{
-        this.mensajeForms('error',"No registrado", e.response.data)
-      })
-    },
-    mensajeForms(iconMsg, title, mensajetStr){
-      Swal.fire(
-        title,
-        mensajetStr,
-        iconMsg
-      )
     }
   },
   computed: {
-    ...mapGetters(['getToken', 'getPersonaUpdate']),
+    ...mapGetters(['getToken']),
   },
 };
 </script>
