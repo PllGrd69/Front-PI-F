@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import jwt_decode from "jwt-decode";
 import router from '../router';
+import bcrypt from 'bcryptjs'
 // import { FormTagsPlugin } from 'bootstrap-vue';
 
 export default createStore({
@@ -21,17 +22,32 @@ export default createStore({
       } else {
         state.usuarioDB = jwt_decode(payload);
         if (state.usuarioDB.rol){
-          let rol = localStorage.getItem('rol')
-          if (!rol){
-            localStorage.setItem('rol', state.usuarioDB.rol[0]);
+          let rolHash = localStorage.getItem('rol')
+          let rol = ''
+          if (!rolHash){
+            // let varConv = 
+            const hash = bcrypt.hashSync(state.usuarioDB.rol[0], 9);
+            console.log(hash)
+            localStorage.setItem('rol', hash);
             rol = state.usuarioDB.rol[0]
-          } 
+          } else {
+            if ( bcrypt.compareSync("ADMIN", rolHash) ) {
+              rol = "ADMIN";
+            } else if ( bcrypt.compareSync("DOCENTE", rolHash) ) {
+              rol = "DOCENTE";
+            } else if ( bcrypt.compareSync("ALUMNO", rolHash) ) {
+              rol = "ALUMNO";
+            } else {
+              rol = "NOT FOUNT"
+            }
+          }
           state.rolUsuario = rol; 
-        }    
+        } 
       }
     },
     asijnarRol(state, payload){
-      localStorage.setItem('rol', payload);
+      const hash = bcrypt.hashSync(payload, 9);
+      localStorage.setItem('rol', hash);
       state.rolUsuario = payload;
     },
     /* Uso de matacion de variables segun se requiera el usuario */
