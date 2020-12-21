@@ -117,7 +117,7 @@
     </section>
   </div>
   <!-- Cuadro De Direccion -->
-  <section v-if="isAdmin" id="category-part">
+  <section v-if="isAdmin || isDocente || isAlumno" id="category-part">
     <div class="container mt-25">
       <div class="category pt-10 pb-20">
         <div class="row">
@@ -131,7 +131,7 @@
             class="col-lg-6 offset-lg-1 col-md-8 offset-md-2 col-sm-8 offset-sm-2 col-8 offset-2"
           >
             <div class="row">
-              <div class="col-lg-4 mt-10">
+              <div class="col-lg-4 mt-10" v-if="isDocente || isAdmin">
                 <a href="CursosAdmin">
                   <span class="singel-category text-center color-1">
                     <span class="icon">
@@ -143,7 +143,7 @@
                   </span>
                 </a>
               </div>
-              <div class="col-lg-4 mt-10">
+              <div class="col-lg-4 mt-10" v-if="isAdmin">
                 <a href="ListarUsuario">
                   <span class="singel-category text-center color-2">
                     <span class="icon">
@@ -155,7 +155,7 @@
                   </span>
                 </a>
               </div>
-              <div class="col-lg-4 mt-10">
+              <div class="col-lg-4 mt-10" v-if="isAdmin">
                 <a href="/Persona">
                   <span class="singel-category text-center color-3">
                     <span class="icon">
