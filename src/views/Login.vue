@@ -59,7 +59,7 @@ import router from '../router'
 export default {
   data(){
     return {
-      usuario: {Email: 'hectorlimahuaya@upeu.edu.pee', Password: '12567%Ac'},
+      usuario: {Email: '', Password: ''},
       isLoging : false
     }
   },
