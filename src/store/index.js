@@ -20,10 +20,18 @@ export default createStore({
         state.usuarioDB = ''
       } else {
         state.usuarioDB = jwt_decode(payload);
-        state.rolUsuario = state.usuarioDB.rol[0]; 
+        if (state.usuarioDB.rol){
+          let rol = localStorage.getItem('rol')
+          if (!rol){
+            localStorage.setItem('rol', state.usuarioDB.rol[0]);
+            rol = state.usuarioDB.rol[0]
+          } 
+          state.rolUsuario = rol; 
+        }    
       }
     },
     asijnarRol(state, payload){
+      localStorage.setItem('rol', payload);
       state.rolUsuario = payload;
     },
     /* Uso de matacion de variables segun se requiera el usuario */
@@ -40,9 +48,10 @@ export default createStore({
     },
     cerrarSesion({commit}){
       commit('obtenerUsuario','');
-      localStorage.removeItem('token')
+      localStorage.removeItem('token');
+      localStorage.removeItem('rol');
       router.push({name: 'Login'});
-    },
+x    },
     leerToken({commit}){
       const token = localStorage.getItem('token')
       if (token) {

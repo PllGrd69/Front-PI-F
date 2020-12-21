@@ -296,8 +296,23 @@ export default {
       this.actualizarPersona('')
       this.cargarLimiteMax();
   },
+  created(){
+    if (this.isAlumno || this.isDocente){
+      this.$router.push({name: 'Home'})
+    }
+  },
   computed: {
-    ...mapGetters(['getToken','getUsuarioSesion']),
+    ...mapGetters(['getToken','getUsuarioSesion', 'rolUsuarioEstado']),
+    isAlumno(){
+      return (this.rolUsuarioEstado == "ALUMNO")?true:false
+    },
+    isDocente(){
+      return (this.rolUsuarioEstado === "DOCENTE")?true:false
+    },
+    isAdmin(){
+      console.log(this.rolUsuarioEstado)
+      return (this.rolUsuarioEstado === "ADMIN")?true:false
+    }
   },
 };
 </script>

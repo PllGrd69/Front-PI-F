@@ -75,10 +75,10 @@
                     <li class="nav-item">
                       <router-link to="/CursosAdmin">Cursos</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li v-if="isAdmin" class="nav-item">
                       <router-link to="/Persona">Persona</router-link>
                     </li>
-                    <li class="nav-item">
+                    <li v-if="isAdmin" class="nav-item">
                       <router-link to="/ListarUsuario">Usuario</router-link>
                     </li>
                   </ul>
@@ -117,7 +117,7 @@
     </section>
   </div>
   <!-- Cuadro De Direccion -->
-  <section id="category-part">
+  <section v-if="isAdmin" id="category-part">
     <div class="container mt-25">
       <div class="category pt-10 pb-20">
         <div class="row">
@@ -187,10 +187,21 @@ export default {
     ...mapActions(['cerrarSesion','cambiarRol']),
     mostrarInfor(){
       console.log(this.tipoUsuario.rol);
-    }
+    },
+    
   },
   computed: {
     ...mapGetters(['estaActivo', 'rolesUsuario','rolUsuarioEstado']),
+    isAlumno(){
+      return (this.rolUsuarioEstado == "ALUMNO")?true:false
+    },
+    isDocente(){
+      return (this.rolUsuarioEstado === "DOCENTE")?true:false
+    },
+    isAdmin(){
+      console.log(this.rolUsuarioEstado)
+      return (this.rolUsuarioEstado === "ADMIN")?true:false
+    }
   },
   components: {},
 };

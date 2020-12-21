@@ -187,7 +187,7 @@ export default {
         this.listaUsuarios = res.data;
       })
       .catch(e =>{
-        console.log(e.response.data)
+        this.mensajeSuperiorMini("error", e.response.data)
       })
     },
     obtenerTodosLosRoles(){
@@ -201,7 +201,7 @@ export default {
         this.todosLosRoles = res.data;
       })
       .catch(e =>{
-        console.log(e.response.data)
+        this.mensajeSuperiorMini("error", e.response.data)
       })
     },
     eliminarRolUsuario(personaID, rolID){
@@ -222,10 +222,19 @@ export default {
     },
     eliminarRolUsuarioMsg(personaID){
       this.mostrarListadoUsuario();
-      // console.log("Eliminar usuario ", personaID)
       var roles = [];
-      this.listaUsuarios.find(persona => persona.id == personaID).rol.forEach(rol => roles[rol.nombre] = rol.nombre )
-
+      let rolUs = this.listaUsuarios.find(persona => persona.id == personaID);
+      if (rolUs.rol){
+        rolUs.rol.forEach(rolUs => {
+          if(rolUs){
+            this.todosLosRoles.forEach(value => {
+              if (value.nombre == rolUs.nombre){
+                roles[value.nombre] =value.nombre;
+              }
+            })
+          }
+        })
+      }
       Swal.fire({
         title: 'Eliminar ROL',
         input: 'select',
@@ -254,7 +263,6 @@ export default {
           Authorization:  "Bearer" + this.getToken    
         }
       }
-      console.log(rolUsuario)
       this.axios.post("/rolUsuario/registrar",rolUsuario, config)
       .then(res =>{
         this.mostrarListadoUsuario();
@@ -272,7 +280,7 @@ export default {
       /**Verificando de que no tenga el mismo rol  */
       let rol = this.todosLosRoles.forEach(rol => {//API STREAM
         let userRol = this.listaUsuarios.find(usuario => {
-          if (usuario.id == personaID){
+          if (usuario.id == personaID && usuario.rol){
             return usuario.rol.find(rolUser => rolUser.nombre == rol.nombre)
           }
         })
@@ -280,7 +288,9 @@ export default {
           roles[rol.nombre] = rol.nombre
         }
       });
+      if (!rol){
 
+      }
       Swal.fire({
         title: 'Creando ROL',
         input: 'select',
@@ -307,14 +317,45 @@ export default {
         mensajetStr,
         iconMsg
       )
+    },
+    mensajeSuperiorMini(iconMsg, mensajetStr){
+      Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        }).fire({
+        icon: iconMsg,
+        title: mensajetStr
+        })
     }
   },
   mounted(){
     this.mostrarListadoUsuario();
     this.obtenerTodosLosRoles();
   },
+  created(){
+    if (this.isAlumno || this.isDocente){
+      this.$router.push({name: 'Home'})
+    }
+  },
   computed: {
-    ...mapGetters(['getToken']),
+    ...mapGetters(['getToken','rolUsuarioEstado']),
+    isAlumno(){
+      return (this.rolUsuarioEstado == "ALUMNO")?true:false
+    },
+    isDocente(){
+      return (this.rolUsuarioEstado === "DOCENTE")?true:false
+    },
+    isAdmin(){
+      console.log(this.rolUsuarioEstado)
+      return (this.rolUsuarioEstado === "ADMIN")?true:false
+    }
   }
 };
 </script>

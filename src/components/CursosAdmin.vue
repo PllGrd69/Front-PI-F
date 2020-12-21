@@ -50,10 +50,10 @@
         </div>
       </div>
     </section>
-    <section id="courses-part" class="pt-50 pb-120 gray-bg">
-      <div class="container">
-        <div class="row">
-          <div class="col-lg-6 col-md-6">
+    <section  id="courses-part" class="pt-50 pb-120 gray-bg">
+      <div class="container" >
+        <div class="row" >
+          <div class="col-lg-6 col-md-6" v-if="isAdmin || isDocente">
             <div class="support-button d-none d-md-block">
               <router-link to="/ListarUA" class="nav-link text-light"
                 ><div class="button">
@@ -62,7 +62,7 @@
               </router-link>
             </div>
           </div>
-          <div class="col-lg-6 col-md-6">
+          <div class="col-lg-6 col-md-6" v-if="isAdmin || isDocente">
             <div class="support-button d-none d-md-block">
               <!-- <router-link
                 to="/cursosadmin/adduaform"
@@ -124,10 +124,10 @@
                     </div>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" v-if="isAdmin || isDocente">
                   <div class="col-lg-12">
                     <div class="corses-singel-left">
-                      <h2 class="mt-5">Crear Curso</h2>
+                      <h2 v-if="isAdmin" class="mt-5">Crear Curso</h2>
                       <hr class="divider my-4" />
                       <div
                         class="overflow-auto"
@@ -205,7 +205,17 @@ export default {
       })
   },
   computed: {
-    ...mapGetters(['getToken']),
+    ...mapGetters(['getToken','rolUsuarioEstado']),
+    isAlumno(){
+      return (this.rolUsuarioEstado == "ALUMNO")?true:false
+    },
+    isDocente(){
+      return (this.rolUsuarioEstado === "DOCENTE")?true:false
+    },
+    isAdmin(){
+      console.log(this.rolUsuarioEstado)
+      return (this.rolUsuarioEstado === "ADMIN")?true:false
+    }
   },
 };
 </script>

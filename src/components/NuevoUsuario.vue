@@ -84,7 +84,7 @@
                   <button
                     type="button"
                     class="btn btn-primary mb-2 col-sm-2 mt-1"
-                    @click="listarUsuario()"
+                    @click="regresarListaUsuarios()"
                   >
                     ATRAS
                   </button>
@@ -96,7 +96,7 @@
                     <div id="card-725447">
                       <div class="card">
                         <div class="card-header">
-                          <a class="card-link collapsed" data-toggle="collapse" data-parent="#card-725447" href="#card-element-652623">Buscar Persona</a>
+                          <a class="card-link collapsed" data-toggle="collapse" data-parent="#card-725447" href="#card-element-652623">Busque y seleccione a la persona</a>
                         </div>
                         <div id="card-element-652623" class="collapse">
                           <div class="card-body">
@@ -114,7 +114,7 @@
                               </div>
 
                               <div class="form-group mx-sm-3 mb-2">
-                                <input v-model="busquedaPersonaText" type="text" class="form-control" id="inputPassword2" :placeholder="'INGRESE EL '+ buscarPersonaPor">
+                                <input v-model="busquedaPersonaText" type="text" class="form-control" id="inputPassword2" :placeholder="'BUSCAR POR '+ buscarPersonaPor">
                               </div>
                               
                               <button type="submit" class="btn btn-primary mb-2">Buscar Persona</button>
@@ -128,7 +128,7 @@
                                 <div id="card-14272">
                                   <div class="card">
                                     <div class="card-header">
-                                      <a class="card-link" data-toggle="collapse" data-parent="#card-14272" href="#card-element-217024">Personas Encontradas {{this.personasBusqueda.length}}</a>
+                                      <a class="card-link" data-toggle="collapse" data-parent="#card-14272" href="#card-element-217024">Personas Encontradas {{(this.personasBusqueda)?this.personasBusqueda.length:0}}</a>
                                     </div>
                                     <div id="card-element-217024" class="collapse show">
                                       <div class="card-body">
@@ -137,13 +137,20 @@
                                           <div class="col-md-12">
                                             <div id="card-14272">
                                                 
-                                              <div v-for="(personita, index) in personasBusqueda" :key="personita" class="card">
+                                              <div v-for="(personita, index) in personasBusqueda" :key="personita" class="card mb-3">
                                                 <div class="card-header">
                                                   <a class="card-link" data-toggle="collapse" data-parent="#card-14283" :href="`#card-persona-`+index">{{ index+1 }}. <strong>{{ "DNI: " + personita.DNI+ " - ID: " + personita.id}}</strong>  </a>
                                                 </div>
                                                 <div :id="`card-persona-`+index" class="collapse">
-                                                  <div class="card-body">
-                                                    otro
+                                                  <div class="list-group">
+                                                    <button type="button" class="list-group-item list-group-item-action active" @click="selectUsuarioPersona(personita.id)">Crear Usuario {{ personita.nombre + " " + personita.apellidoPaterno + " " + personita.apellidoMaterno }}</button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>ID: <strong>{{personita.id}}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>Nombre: <strong>{{ personita.nombre }}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>Apellido Paterno: <strong>{{ personita.apellidoPaterno }}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>Apellido Materno: <strong>{{ personita.apellidoMaterno }}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>DNI: <strong>{{ personita.DNI }}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>Fecha de Nacimiento: <strong>{{ personita.fechaDeNacimiento }}</strong></button>
+                                                    <button type="text" class="list-group-item list-group-item-action" disabled>Genero: <strong>{{ personita.genero }}</strong></button>
                                                   </div>
                                                 </div>
                                               </div>
@@ -170,27 +177,24 @@
                 </div>
 
 
-
-
-
-
-                  
+                <h4 v-if="personaCrearUser" class="mt-4 text-center">Creando usuario para {{personaCrearUser.nombre + " " + personaCrearUser.apellidoPaterno + " " + personaCrearUser.apellidoMaterno}}</h4>    
                   
                   <form
                     class="mt-4"
-                    @submit.prevent="this.estadoActualizarCrear()"
+                    @submit.prevent="this.crearUsuarioPersona()"
                   >
                     <div class="form-group row">
                       <label for="nombrePersona" class="col-sm-2 col-form-label"
-                        >Nombres</label
+                        >Persona ID: </label
                       >
                       <div class="col-sm-10">
                         <input
-                          type="text"
+                          type="number"
                           class="form-control"
                           id="nombrePersona"
-                          placeholder="Faraon"
-                          v-model="persona.Nombre"
+                          placeholder="0"
+                          disabled
+                          v-model="usuario.PersonaID"
                         />
                       </div>
                     </div>
@@ -198,15 +202,15 @@
                       <label
                         for="apellidoPaterno"
                         class="col-sm-2 col-form-label"
-                        >Apellido Paterno</label
+                        >Nombre de Usuario</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
                           id="apellidoPaterno"
-                          placeholder="Love"
-                          v-model="persona.ApellidoPat"
+                          placeholder="Faraon"
+                          v-model="usuario.UserName"
                         />
                       </div>
                     </div>
@@ -214,15 +218,15 @@
                       <label
                         for="apellidoMaterno"
                         class="col-sm-2 col-form-label"
-                        >Apellido Materno</label
+                        >Email</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
                           id="apellidoMaterno"
-                          placeholder="Shady"
-                          v-model="persona.ApellidoMat"
+                          placeholder="loveshady@upeu.edu.pe"
+                          v-model="usuario.Email"
                         />
                       </div>
                     </div>
@@ -230,86 +234,20 @@
                       <label
                         for="apellidoMaterno"
                         class="col-sm-2 col-form-label"
-                        >DNI</label
+                        >Contraseña</label
                       >
                       <div class="col-sm-10">
                         <input
                           type="text"
                           class="form-control"
                           id="apellidoMaterno"
-                          placeholder="01010101"
-                          v-model="persona.Dni"
+                          placeholder="123456#UPeU"
+                          v-model="usuario.Password"
                         />
                       </div>
                     </div>
-                    <div class="form-group row">
-                      <label
-                        for="apellidoMaterno"
-                        class="col-sm-2 col-form-label"
-                        >Fecha de Nacimiento</label
-                      >
-                      <div class="col-sm-10">
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="apellidoMaterno"
-                          placeholder="AAAA-MM-DD"
-                          v-model="persona.FechaNac"
-                        />
-                      </div>
-                    </div>
-                    <fieldset class="form-group">
-                      <div class="row">
-                        <legend class="col-form-label col-sm-2 pt-0">
-                          Genero
-                        </legend>
-                        <div class="col-sm-10">
-                          <div class="row">
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios1"
-                                value="M"
-                                v-model="persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios1">
-                                Masculino
-                              </label>
-                            </div>
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios2"
-                                value="F"
-                                v-model="persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios2">
-                                Femenino
-                              </label>
-                            </div>
-                            <div class="form-check col-sm-4">
-                              <input
-                                class="form-check-input"
-                                type="radio"
-                                name="gridRadios"
-                                id="gridRadios2"
-                                value="O"
-                                v-model="this.persona.Genero"
-                              />
-                              <label class="form-check-label" for="gridRadios2">
-                                Otro
-                              </label>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </fieldset>
-                    <div class="form-group row">
-                      <div class="col-sm-12">
+                    <div class="form-group row ">
+                      <div class="col-sm-12 mt-1">
                         <button type="submit" class="col-sm-6 btn btn-primary">
                           Guardar
                         </button>
@@ -334,17 +272,25 @@ export default {
   props: ["titulo"],
   data() {
     return {
-      personasBusqueda:[],
-      persona:"",
-      buscarPersonaPor: "ID",
-      actualizar: false,
-      busquedaPersonaText: ""
+      personasBusqueda:[],//Contiene todos los usarios
+      // persona:"",//temp por el error que sale
+      buscarPersonaPor: "ID", //Valor que guarda la selccion
+      actualizar: false,//Si se actualiza al usario o se crea
+      busquedaPersonaText: "",//Permtie que conservar el valor que se da en la busqueda
+      personaCrearUser: "", //Permite gurar a la persona que se selecciono
+      usuario: { PersonaID: 0, UserName: '', Email: '', Password: ''},
+      listaUsuarios : [],
     };
   },
   methods:{
+    regresarListaUsuarios(){
+      this.$router.push({name: "ListarUsuario"})
+    },
     buscarPersona(){
       let rutaApi = null
+      let id = false;
       if (this.buscarPersonaPor === "ID") {
+        id = true;
         rutaApi = "/persona/id/"+this.busquedaPersonaText
       } else if (this.buscarPersonaPor === 'DNI') {
         rutaApi = "/persona/dni/"+this.busquedaPersonaText
@@ -363,13 +309,83 @@ export default {
         }
         this.axios.get(rutaApi, config)
         .then(res =>{
-          this.personasBusqueda = res.data;
-          console.log(this.personasBusqueda)
+          if (id){
+            this.personasBusqueda = new Array(res.data);
+          }else {
+            this.personasBusqueda = res.data;
+          }
         })
         .catch(e =>{
-          console.log(e.response.data)
+          this.mensajeSuperiorMini("error",e.response.data)
+          // console.log(e.response.data)
         })
       }
+    },
+    crearUsuarioPersona(){
+        this.mostrarListadoUsuario()
+        let usuarioExis = this.listaUsuarios.find(usuario => (usuario.id === this.personaCrearUser.id)?usuario:null)
+        if(!usuarioExis){
+          console.log(this.usuario)
+          let config = {
+            headers: {
+              Authorization:  "Bearer"+this.getToken    
+            }
+          }
+          this.axios.post("/usuario/register", this.usuario, config )
+          .then(res =>{
+            this.mensajeForms('success',"Registrado", res.data.mensaje)
+            this.$router.push({name: "ListarUsuario"})
+          })
+          .catch(e =>{
+            this.mensajeForms('error',"No registrado", e.response.data)
+          })
+
+        }
+    },
+
+    selectUsuarioPersona(personaID){
+      let persona = this.personasBusqueda.find(persona => (persona.id === personaID)?persona:null);
+      this.personasBusqueda = new Array(persona);
+      this.personaCrearUser = persona
+      this.usuario.PersonaID = persona.id
+      this.mostrarListadoUsuario();
+    },
+    mostrarListadoUsuario() {
+      let config = {
+        headers: {
+          Authorization:  "Bearer" + this.getToken    
+        }
+      }
+      this.axios.get("/usuario/allUsuario", config)
+      .then(res =>{
+        this.listaUsuarios = res.data;
+      })
+      .catch(e =>{
+        this.mensajeSuperiorMini("error",e.response.data)
+      })
+    },
+    mensajeForms(iconMsg, title, mensajetStr){
+      Swal.fire(
+        title,
+        mensajetStr,
+        iconMsg
+      )
+    },
+    mensajeSuperiorMini(iconMsg, mensajetStr){
+      Swal.mixin({
+        toast: true,
+        position: 'top-end',
+        showConfirmButton: false,
+        timer: 5000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener('mouseenter', Swal.stopTimer)
+          toast.addEventListener('mouseleave', Swal.resumeTimer)
+        }
+        }).fire({
+        icon: iconMsg,
+        title: mensajetStr
+        })
     }
   },
   computed: {
