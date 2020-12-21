@@ -65,6 +65,11 @@ const routes = [
     name: 'ListarUA',
     component: () => import('../components/ListUA.vue'),
   }, 
+  {
+    path: '/VistaCursos',
+    name: 'VistaCursos',
+    component: () => import('../views/VistaCursos.vue'),
+  }, 
 
 ]
 
