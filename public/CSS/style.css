@@ -1651,3 +1651,208 @@ p {
 .corses-tab .nav .nav-item a.active {
     background-color: #fff;
 }
+
+.curriculam-cont{
+    padding: 25px 30px;
+}
+.curriculam-cont .title h6{
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    color: #000;
+    padding-bottom: 30px;
+}
+
+.curriculam-cont .accordion{
+    border: 0;
+}
+.curriculam-cont .accordion .card{
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid #cecece !important;
+}
+.curriculam-cont .accordion .card:last-child{
+    border-bottom: 0 !important;
+}
+
+.curriculam-cont .accordion .card .card-header {
+    padding: 0;
+    border-bottom: 0;
+}
+
+.curriculam-cont .accordion .card .card-header a {
+	overflow: hidden;
+	display: block;
+    padding: 15px 15px;
+    background-color: #edf0f2;
+}
+.curriculam-cont .accordion .card .card-header a.collapsed{
+    background-color: #fff;
+    border: none;
+}
+
+.curriculam-cont .accordion .card .card-header a::before,
+.curriculam-cont .accordion .card .card-header a.collapsed::before {
+	content: "\f107";
+	font-family: FontAwesome;
+	font-size: 18px;
+	color: #8a8a8a;
+	position: absolute;
+	top: 15px;
+	right: 15px;
+	-webkit-transform: rotate(180deg);
+	transform: rotate(180deg);
+	-webkit-transition: all 0.2s linear;
+	transition: all 0.2s linear;
+}
+.curriculam-cont .accordion .card .card-header a.collapsed:before{
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+.curriculam-cont .accordion .card .card-header a ul li{
+    display: inline-block;
+}
+.curriculam-cont .accordion .card .card-header a ul li:last-child{
+    float: right;
+}
+
+.curriculam-cont .accordion .card .card-header a ul li > i{
+    color: #ffc600;
+    font-size: 15px;
+    margin-right: 5px;
+}
+.curriculam-cont .accordion .card .card-header a ul li > .lecture{
+    font-size: 15px;
+    color: #8a8a8a;
+}
+.curriculam-cont .accordion .card .card-header a ul li > .head{
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Montserrat', sans-serif;
+    margin-left: 15px;
+    color: #000;
+}
+.curriculam-cont .accordion .card .card-header a ul li > .time {
+	font-size: 15px;
+	color: #8a8a8a;
+	text-align: right;
+	padding-right: 30px;
+}
+.curriculam-cont .accordion .card .card-header a ul li > .time i{
+    margin-right: 5px;
+}
+.curriculam-cont .accordion .card .card-header a ul li > .time span{}
+
+.curriculam-cont .accordion .card .card-body {
+	background-color: #edf0f2;
+	padding: 0 25px 20px;
+}
+.course-features{
+    background-color: #fff;
+    padding: 30px 35px;
+    border-radius: 5px;
+}
+.course-features h4,
+.You-makelike h4{
+    font-size: 24px;
+    color: #07294d;
+    padding-bottom: 15px;
+}
+.course-features ul{}
+.course-features ul li{
+    font-size: 15px;
+    color: #8a8a8a;
+    overflow: hidden;
+    line-height: 45px;
+    border-bottom: 1px solid #d2d2d2;
+}
+.course-features ul li:last-child{
+    border-bottom: 0;
+}
+
+.course-features ul li i{
+    color: #ffc600;
+    margin-right: 8px;
+}
+.course-features ul li span{
+    float: right;
+}
+
+.course-features .price-button{
+    overflow: hidden;
+}
+.course-features .price-button span{
+    font-size: 18px;
+    color: #24486e;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    margin-top: 12px;
+}
+.course-features .price-button span b{
+    color: #ffc600;
+}
+.course-features .price-button .main-btn{
+    float: right;
+}
+.You-makelike{
+    background-color: #fff;
+    padding: 25px 30px 30px;
+    border-radius: 5px;
+}
+.You-makelike .singel-makelike{
+    position: relative;
+    border-radius: 5px;
+    overflow: hidden;
+}
+.You-makelike .singel-makelike .image{
+    position: relative;
+}
+.You-makelike .singel-makelike .image::before{
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    background-color: rgba(7, 41, 77, 0.8);
+}
+.You-makelike .singel-makelike .image img{
+    width: 100%;
+}
+
+.You-makelike .singel-makelike .cont{
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    padding: 0 30px;
+}
+.You-makelike .singel-makelike .cont h4{
+    font-size: 18px;
+    color: #fff;
+    font-weight: 600;
+    -webkit-transition: all 0.4s linear;
+    transition: all 0.4s linear;
+}
+.You-makelike .singel-makelike .cont h4:hover{
+    color: #ffc600;
+}
+
+.You-makelike .singel-makelike .cont ul li {
+    display: inline-block;
+    margin-right: 15px;
+    color: #ffc600;
+}
+.You-makelike .singel-makelike .cont ul li a{
+    font-size: 14px;
+    color: #fff;
+}
+.You-makelike .singel-makelike .cont ul li a i{
+    margin-right: 3px;
+}
+.login,
+.image {
+  min-height: 10vh;
+}
