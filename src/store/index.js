@@ -95,9 +95,7 @@ x    },
     rolUsuarioEstado: state => {
       return state.rolUsuario;
     },
-    getToken: state => {
-      return state.token
-    },
+    getToken: state => state.token,
     getUsuarioSesion: state => state.usuarioDB,
     /* Metodos para uso general, para acciones del usuario */
     getPersonaUpdate: state => state.personaUpdate,

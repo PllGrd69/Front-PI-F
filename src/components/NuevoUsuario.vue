@@ -340,6 +340,8 @@ export default {
             this.mensajeForms('error',"No registrado", e.response.data)
           })
 
+        }else {
+          this.mensajeForms('error',"Usuario Existe", "Este usuario ya fue creado")
         }
     },
 
