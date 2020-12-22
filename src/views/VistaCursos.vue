@@ -27,7 +27,8 @@
                     <div class="corses-singel-left mt-30">
                         <div class="title">
                             <!-- poner el nombre del curs -->
-                            <h3>Curso de {{this.cursoSeleccionado.nombre}}</h3>
+                            <h3>Unidad {{this.unidad.orden}} - {{this.cursoSeleccionado.nombre}}</h3>
+                            <h5 class="mb-5">{{this.unidad.nombre}}</h5>
                         </div> <!-- title -->
                         <div class="course-terms">
                             <ul>
@@ -56,7 +57,7 @@
                                     <a :class="{ active : (index == 0)?true:false}" :id="`Sesion${index+1}-tab`" data-toggle="tab" :href="`#Sesion${index+1}`" role="tab" :aria-controls="`Sesion${index+1}`" :aria-selected="{ active : (index == 0)?true:false}">Sesión {{index+1}}</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a data-toggle="tab" class="crearSesion" role="tab" aria-selected="false" @click="crearSesion()">Crear Sesión</a>
+                                    <a  class="crearSesion" role="tab" data-toggle="tooltip" @click="mensajeCrearSesionAcademica()">Crear Sesión</a>
                                 </li>
                                 <!-- <li class="nav-item">
                                     <a id="Sesion3-tab" data-toggle="tab" href="#Sesion3" role="tab" aria-controls="Sesion3" aria-selected="false">Sesion 3</a>
@@ -183,7 +184,7 @@
                                     <div class="image">
                                     </div>
                                     <div class="cont">
-                                        <a href="#" @click="crearUnidadAcademica()"><h4>Crear Unidad</h4></a>
+                                        <a href="#" @click="mensajeCrearUnidadAcademica()"><h4>Crear Unidad</h4></a>
                                     </div>
                                 </div>
                             </div>
@@ -198,12 +199,15 @@
 </template>
   
 <script>
+import Swal from 'sweetalert2';
 import {mapGetters} from 'vuex';
 export default {
     data(){
         return {
             cursoSeleccionado: "",
             unidadesCurso: [],
+            unidad:"",
+            unidadSeleccionadaID: "",
             sesionesCardsIDs: [],
             sesionesDeUnidad: [],
         }
@@ -231,7 +235,7 @@ export default {
                     Authorization:  "Bearer"+this.getToken    
                 }
             }
-            this.axios.get("curso/id/"+"1", config)
+            this.axios.get("/curso/id/"+"1", config)
             .then(res =>{ 
                 this.cursoSeleccionado = res.data;
                 this.obtenerUnidadCurso();
@@ -241,17 +245,17 @@ export default {
             })
         },
         obtenerSesionesDeLaUnidades(unidadID){
-            console.log(unidadID)
+            this.unidadSeleccionadaID = unidadID
             let config = {
                 headers: {
                     Authorization:  "Bearer"+this.getToken    
                 }
             }
+            this.unidad = this.unidadesCurso.find(uni => (uni.id ==unidadID)?uni:null);
             this.axios.get("/sesion/unidadAcademica/"+unidadID, config)
             .then(res =>{ 
-                console.log("sesiones de las unidades")
-                console.log(res.data)
                 this.sesionesDeUnidad = res.data;
+                console.log(this.unidadesCurso)
             })
             .catch(e =>{
                 this.mensajeSuperiorMini("error",e.response.data)
@@ -273,12 +277,80 @@ export default {
                 title: mensajetStr
             })
         },
-        crearUnidadAcademica() {
-            console.log("Crear unidad Academica")
+        mensajeCrearUnidadAcademica() {
+            Swal.fire({
+                title: 'Ingrese el nombre de la unidad',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Crear Unidad',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.crearUnidadAcademica(result.value)
+                }
+            })
         },
-        crearSesion(){
-            console.log("Crear sesion Academica")
+        mensajeCrearSesionAcademica() {
+            Swal.fire({
+                title: 'Ingrese el nombre de la sesion',
+                input: 'text',
+                inputAttributes: {
+                    autocapitalize: 'off'
+                },
+                showCancelButton: true,
+                cancelButtonText: 'Cancelar',
+                confirmButtonText: 'Crear Sesión',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.crearSesion(result.value)
+                }
+            })
         },
+        crearUnidadAcademica(nombre) {
+            if (this.unidadesCurso){
+                let plan = this.unidadesCurso[0];
+                let config = {
+                    headers: {
+                        Authorization:  "Bearer"+this.getToken    
+                    }
+                }
+                let unidadAcad = {PlanCursoID : plan.planCursoID, Nombre: nombre}
+                this.axios.post("/unidad/registrar", unidadAcad,config)
+                .then(res =>{ 
+                    this.obtenerCursoSeleccionado();
+                    this.mensajeForms("success", "REGISTRADO", res.data.mensaje )
+                })
+                .catch(e =>{
+                    this.mensajeSuperiorMini("error",e.response.data)
+                })
+            }
+        },
+        crearSesion(nombreSesion){
+            let config = {
+                headers: {
+                    Authorization:  "Bearer"+this.getToken    
+                }
+            }
+            let sesion = {Nombre: nombreSesion, UnidadID: this.unidadSeleccionadaID}
+            this.axios.post("/sesion/registrar", sesion, config)
+            .then(res =>{ 
+                this.obtenerSesionesDeLaUnidades(this.unidadSeleccionadaID)
+                this.mensajeForms("success", "Se registro la sesión", res.data.mensaje)
+            })
+            .catch(e =>{
+                this.mensajeForms("error", "Error al registrar la sesión", e.response.data)
+            })
+        },
+        mensajeForms(iconMsg, title, mensajetStr){
+            Swal.fire(
+                title,
+                mensajetStr,
+                iconMsg
+            )
+        }
     },
     created(){
         if(this.isAlumno) {//SI ES ALUMNO DENEGAR EL ACCESO
@@ -289,15 +361,14 @@ export default {
     computed: {
         ...mapGetters(['getToken','getUsuarioSesion','rolUsuarioEstado']),
         isAlumno(){
-        return (this.rolUsuarioEstado == "ALUMNO")?true:false
+            return (this.rolUsuarioEstado == "ALUMNO")?true:false
         },
         isDocente(){
-        return (this.rolUsuarioEstado === "DOCENTE")?true:false
+            return (this.rolUsuarioEstado === "DOCENTE")?true:false
         },
         isAdmin(){
-        console.log(this.rolUsuarioEstado)
-        return (this.rolUsuarioEstado === "ADMIN")?true:false
-    }
+            return (this.rolUsuarioEstado === "ADMIN")?true:false
+        }
   }
 }
 </script>
